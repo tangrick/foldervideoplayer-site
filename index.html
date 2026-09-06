@@ -697,12 +697,9 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
 <script>
 (function(){
   /* ---------- help form ---------- */
-  // FREE Formspree key: create a form at formspree.io and paste its endpoint id here.
-  // Until then, submissions open a pre-filled email instead.
-  var FORMSPREE_ID = "";
-  // Optional: Cloudflare Turnstile site key (free — challenges.cloudflare.com). Leave "" to disable the widget;
-  // the honeypot and time-trap still protect the form.
-  var TURNSTILE_SITE_KEY = "";
+  // Submissions POST to this site's own /api/contact (Cloudflare Pages Function),
+  // which verifies Cloudflare Turnstile server-side and sends via Brevo email.
+  var TURNSTILE_SITE_KEY = "0x4AAAAAAEpxzCgvhoaWEioD";
   var hf = document.getElementById('helpForm');
   var tStart = Date.now();      // time-trap: humans take >4s to type a message
   var hfCount = 0;              // session cap: max 5 sends per page load
@@ -747,23 +744,25 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         'cf-turnstile-response': __tsToken
       };
       btn.disabled = true; btn.textContent = 'Sending…';
-      if (FORMSPREE_ID) {
-        fetch('https://formspree.io/f/' + FORMSPREE_ID, {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(data)
-        }).then(function(res){
-          if (res.ok) { st.className='formstatus ok'; st.innerHTML = ok + ' Sent! We’ll get back to you at ' + data.email + '.'; hf.reset(); }
-          else { st.className='formstatus err'; st.innerHTML = bad + ' Couldn’t send. Please try again or email richardtang@me.com.'; }
-        }).catch(function(){
-          st.className='formstatus err'; st.innerHTML = bad + ' Network error. Please email richardtang@me.com instead.';
-        }).finally(function(){ btn.disabled = false; btn.textContent = 'Send message'; });
-      } else {
+      fetch('/api/contact', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(function(res){
+        return res.json().then(function(j){ return { res: res, j: j }; });
+      }).then(function(r){
+        if (r.res.ok && r.j.ok) {
+          st.className='formstatus ok'; st.innerHTML = ok + ' Sent! We’ll get back to you at ' + data.email + '.'; hf.reset();
+        } else {
+          st.className='formstatus err'; st.innerHTML = bad + ' Couldn’t send (error ' + (r.j && r.j.error ? r.j.error : r.res.status) + '). Please email richardtang@me.com instead.';
+        }
+      }).catch(function(){
+        // network failure — fall back to mailto compose so the message is never lost
+        st.className='formstatus ok';
+        st.innerHTML = ok + ' Offline — opening your email app with the message ready, just press send.';
         var body = 'Name: ' + (data.name || '—') + '\nEmail: ' + data.email + '\nApp version: ' + data.version + '\nShare server: ' + data.server + '\n\n' + data.message;
         var link = 'mailto:richardtang@me.com?subject=' + encodeURIComponent('FolderVideoPlayer support') + '&body=' + encodeURIComponent(body);
         window.location.href = link;
-        st.className='formstatus ok';
-        st.innerHTML = ok + ' Your email app should open with the message ready — just press send.';
-      }
+      }).finally(function(){ btn.disabled = false; btn.textContent = 'Send message'; });
     });
   }
 
