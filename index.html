@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FolderVideoPlayer for Apple TV — Your NAS library, on the big screen</title>
+<meta name="description" content="FolderVideoPlayer is a fast, private SMB video player for Apple TV. Browse your NAS folders, tags and thumbnails — all on your own network. No accounts, no cloud, no ads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;
+  --panel:#ffffff;
+  --ink:#24211b;
+  --mut:#6e675c;
+  --mut2:#8f887a;
+  --acc:#b45309;
+  --acc-ink:#ffffff;
+  --acc-deep:#96430a;
+  --acc-soft:rgba(180,83,9,.09);
+  --acc-line:rgba(180,83,9,.28);
+  --line:rgba(40,34,24,.11);
+  --line2:rgba(40,34,24,.07);
+  --shadow:0 18px 44px -20px rgba(110,80,30,.22);
+  --font-d:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --font-s:"Instrument Serif",Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(70% 45% at 50% -5%,rgba(233,196,138,.22),transparent 65%),
+    linear-gradient(180deg,#faf8f3 0%,var(--bg) 42%,#f1ede3 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--font-d);
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity:.022;
+}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 28px}
+a{color:inherit;text-decoration:none}
+img{display:block}
+
+/* ---------- topbar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(14px);
+  background:rgba(250,248,244,.82);
+  border-bottom:1px solid var(--line2);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:16px;letter-spacing:.01em;color:var(--ink)}
+.brand .mark{
+  width:30px;height:30px;border-radius:8px;flex:0 0 auto;
+  background:linear-gradient(145deg,#232c39,#0e131b);
+  border:1px solid rgba(0,0,0,.25);
+  display:grid;place-items:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 10px rgba(60,45,15,.18);
+}
+.brand .mark svg{width:16px;height:16px}
+.nav{display:flex;align-items:center;gap:26px;font-size:13.5px;color:var(--mut)}
+.nav a{transition:color .25s}
+.nav a:hover{color:var(--ink)}
+.nav .pill{
+  color:#fff;background:var(--acc);
+  padding:7px 15px;border-radius:999px;font-weight:700;font-size:13px;
+  box-shadow:0 4px 14px rgba(180,83,9,.28);
+  transition:transform .25s,box-shadow .25s,background .25s;
+}
+.nav .pill:hover{transform:translateY(-1px);background:var(--acc-deep);box-shadow:0 8px 22px rgba(180,83,9,.38);color:#fff}
+
+/* ---------- hero (centered, big TV below) ---------- */
+.hero{padding:88px 0 40px;text-align:center}
+.hero .inner{max-width:1000px;margin:0 auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acc);
+  border:1px solid var(--acc-line);
+  background:var(--acc-soft);
+  padding:8px 15px;border-radius:999px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px rgba(180,83,9,.55);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{
+  font-size:clamp(40px,6vw,68px);
+  line-height:1.02;
+  font-weight:650;
+  letter-spacing:-.024em;
+  margin:24px 0 20px;
+  color:var(--ink);
+}
+h1 em{
+  font-family:var(--font-s);
+  font-style:italic;
+  font-weight:400;
+  color:var(--acc);
+  padding-right:.06em;
+}
+.lede{color:var(--mut);font-size:clamp(16px,1.6vw,18.5px);max-width:58ch;margin:0 auto 32px}
+.lede b{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:15px 26px;border-radius:13px;
+  font-weight:700;font-size:15px;
+  transition:transform .25s,box-shadow .25s,background .25s;
+}
+.btn.primary{background:var(--acc);color:#fff;box-shadow:0 10px 30px rgba(180,83,9,.32)}
+.btn.primary:hover{transform:translateY(-2px);background:var(--acc-deep);box-shadow:0 16px 42px rgba(180,83,9,.42)}
+.btn.primary svg{width:16px;height:16px}
+.btn.ghost{border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.65)}
+.btn.ghost:hover{border-color:rgba(40,34,24,.3);transform:translateY(-2px)}
+.trust{display:flex;gap:22px;margin-top:28px;justify-content:center;flex-wrap:wrap;color:var(--mut2);font-size:12.5px;font-weight:600;letter-spacing:.04em}
+.trust span{display:inline-flex;align-items:center;gap:7px}
+.trust svg{width:13px;height:13px;color:var(--acc)}
+
+/* ---------- the TV ---------- */
+.stage{position:relative;margin:54px auto 8px;max-width:520px}
+.glow{
+  position:absolute;inset:-10% -6%;z-index:-1;
+  background:
+    radial-gradient(40% 55% at 68% 30%,rgba(224,154,60,.22),transparent 70%),
+    radial-gradient(45% 60% at 28% 78%,rgba(120,150,210,.2),transparent 72%);
+  filter:blur(16px);
+}
+.tvf{
+  position:relative;
+  background:linear-gradient(180deg,#1a2333,#0a0d13);
+  border:1px solid rgba(0,0,0,.6);
+  border-radius:24px;
+  padding:16px;
+  box-shadow:
+    0 44px 90px -34px rgba(90,62,18,.55),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+.tvsf{
+  position:absolute;inset:16px;z-index:2;border-radius:16px;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.02) 24%,transparent 42%);
+}
+.tvshot{
+  width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.06);
+  background:#0a0e15;
+}
+.tvbar{display:flex;align-items:center;justify-content:space-between;padding:16px 10px 2px;color:#aeb6c4;font-size:13px;font-weight:600;letter-spacing:.02em;gap:12px;flex-wrap:wrap}
+.tvbar .l{display:flex;align-items:center;gap:10px}
+.tvbar .l i{width:7px;height:7px;border-radius:50%;background:#e8963a;box-shadow:0 0 9px rgba(232,150,58,.9);flex:0 0 auto}
+.tvbar .l b{color:#eef1f6;font-weight:650}
+.tvstand{
+  margin:-4px auto 0;width:250px;height:30px;
+  background:linear-gradient(180deg,#1d2536,#0b0e15);
+  border-radius:0 0 12px 12px;
+  border:1px solid rgba(0,0,0,.5);border-top:none;
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.08),0 10px 18px -8px rgba(60,40,10,.35);
+}
+.tvshadow{
+  margin:-11px auto 0;width:min(460px,74%);height:30px;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(90,62,18,.34),transparent 72%);
+  filter:blur(2px);
+}
+.float-card{
+  position:absolute;display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(40,34,24,.1);
+  border-radius:14px;
+  padding:12px 16px;
+  font-size:13px;font-weight:650;
+  color:var(--ink);
+  box-shadow:0 18px 44px rgba(100,72,20,.24);
+  animation:float 6s ease-in-out infinite;
+}
+.float-card svg{width:15px;height:15px;color:var(--acc);flex:0 0 auto}
+.float-card small{display:block;font-size:10.5px;color:var(--mut2);font-weight:500;line-height:1.25}
+.fc1{top:10%;left:-14px;animation-delay:.4s}
+.fc2{bottom:20%;right:-14px;animation-delay:2s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+/* ---------- sections ---------- */
+section{padding:80px 0}
+.kicker{
+  font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--acc);margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.kicker::before{content:"";width:26px;height:2px;border-radius:2px;background:var(--acc)}
+h2{font-size:clamp(27px,3.4vw,38px);font-weight:650;letter-spacing:-.018em;line-height:1.12;margin-bottom:14px;max-width:22ch;color:var(--ink)}
+h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--acc)}
+.sub{color:var(--mut);font-size:16px;max-width:56ch}
+
+/* stats */
+.stats{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:0;margin:6px 0 0;background:rgba(255,255,255,.4)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:34px 26px 34px 0;border-left:1px solid var(--line2)}
+.stat:first-child{border-left:none}
+.stat .n{font-size:clamp(26px,2.8vw,36px);font-weight:700;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:baseline;gap:3px}
+.stat .n i{font-family:var(--font-s);font-style:italic;color:var(--acc);font-size:.85em}
+.stat .l{color:var(--mut2);font-size:13px;margin-top:6px;max-width:24ch}
+
+/* features */
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.feat{
+  background:var(--panel);
+  border:1px solid var(--line2);
+  border-radius:18px;
+  padding:26px 26px 24px;
+  position:relative;overflow:hidden;
+  box-shadow:0 2px 6px rgba(90,66,25,.05);
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.feat:hover{transform:translateY(-4px);border-color:rgba(180,83,9,.28);box-shadow:var(--shadow)}
+.feat::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--acc),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.feat:hover::before{opacity:1}
+.feat .ic{
+  width:40px;height:40px;border-radius:11px;margin-bottom:18px;
+  display:grid;place-items:center;
+  background:var(--acc-soft);
+  border:1px solid var(--acc-line);
+}
+.feat .ic svg{width:19px;height:19px;color:var(--acc)}
+.feat h3{font-size:17.5px;font-weight:650;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink)}
+.feat p{color:var(--mut);font-size:14px;line-height:1.62}
+.feat p b{color:var(--ink);font-weight:600}
+
+/* gallery — big TV screens, one per row */
+.gallery{background:rgba(255,255,255,.32);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.shot{
+  position:relative;aspect-ratio:16/9;
+  background:#0d1117;
+  border-radius:12px;overflow:hidden;
+  border:1px solid rgba(40,34,24,.16);
+  box-shadow:0 2px 8px rgba(90,66,25,.07);
+  transition:transform .3s,box-shadow .3s;
+}
+.shot:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* how it connects band */
+.connect{
+  border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.15));
+}
+.conn3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:44px;position:relative}
+.conn3 .step{position:relative;padding:0 34px}
+.conn3 .step:not(:last-child)::after{
+  content:"";position:absolute;right:0;top:34px;width:1px;height:64%;
+  background:linear-gradient(180deg,transparent,var(--line),transparent);
+}
+.conn3 .step .no{
+  font-family:var(--font-s);font-style:italic;font-size:21px;color:var(--acc);
+  display:block;margin-bottom:10px;
+}
+.conn3 .step h3{font-size:16px;font-weight:650;margin-bottom:7px;color:var(--ink)}
+.conn3 .step p{color:var(--mut);font-size:13.5px;line-height:1.6}
+.conn3 .step .chip{
+  display:inline-flex;align-items:center;gap:6px;margin-top:13px;
+  font-size:11px;font-weight:700;letter-spacing:.05em;
+  color:#5b5347;background:rgba(255,255,255,.9);
+  border:1px solid var(--line);padding:5px 11px;border-radius:999px;
+}
+.conn3 .step .chip svg{width:11px;height:11px;color:var(--acc)}
+
+/* privacy band */
+.priv{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:26px;
+  background:var(--panel);border:1px solid var(--line2);border-radius:20px;
+  padding:30px 34px;margin-top:8px;
+  box-shadow:0 2px 8px rgba(90,66,25,.05);
+}
+.priv .shield{
+  width:52px;height:52px;border-radius:15px;flex:0 0 auto;
+  display:grid;place-items:center;
+  background:var(--acc-soft);
+  border:1px solid var(--acc-line);
+}
+.priv .shield svg{width:24px;height:24px;color:var(--acc)}
+.priv h3{font-size:18px;font-weight:650;margin-bottom:5px;color:var(--ink)}
+.priv p{color:var(--mut);font-size:14.5px;max-width:64ch}
+.priv a{color:var(--acc);font-weight:650;white-space:nowrap;font-size:14px}
+.priv a:hover{text-decoration:underline}
+
+/* FAQ */
+.faqs{margin-top:40px;display:grid;gap:10px;max-width:820px}
+.faqs details{
+  border:1px solid var(--line2);border-radius:15px;
+  background:var(--panel);
+  padding:0 24px;
+  box-shadow:0 1px 4px rgba(90,66,25,.04);
+  transition:border-color .3s;
+}
+.faqs details[open]{border-color:var(--acc-line);background:rgba(255,252,246,.9)}
+.faqs summary{
+  list-style:none;cursor:pointer;
+  padding:19px 30px 19px 0;position:relative;
+  font-weight:650;font-size:15.5px;letter-spacing:-.005em;
+  color:var(--ink);
+}
+.faqs summary::-webkit-details-marker{display:none}
+.faqs summary::after{
+  content:"+";position:absolute;right:2px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:var(--acc);font-weight:400;transition:transform .3s;
+}
+.faqs details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faqs .a{color:var(--mut);font-size:14.5px;padding:0 0 20px;line-height:1.7}
+.faqs .a a{color:var(--acc);font-weight:600}
+.faqs .a a:hover{text-decoration:underline}
+.faqs .a b{color:var(--ink)}
+
+/* contact / help form */
+.helpcard{
+  background:var(--panel);border:1px solid var(--line2);border-radius:20px;
+  padding:34px 36px;margin-top:40px;max-width:760px;
+  box-shadow:0 2px 8px rgba(90,66,25,.05);
+}
+.helpcard .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:650;margin-bottom:7px;color:var(--ink)}
+.field label span{color:var(--acc);font-weight:700}
+.field input,.field textarea{
+  width:100%;background:#fff;border:1px solid var(--line);border-radius:11px;
+  padding:12px 14px;font:inherit;font-size:14.5px;color:var(--ink);
+  outline:none;transition:border-color .2s,box-shadow .2s;
+}
+.field textarea{resize:vertical;min-height:130px}
+.field input::placeholder,.field textarea::placeholder{color:#b3ab9c}
+.field input:focus,.field textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(180,83,9,.14)}
+.helpcard .note{color:var(--mut2);font-size:12.5px;margin-top:2px}
+.formrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.btn.submit{background:var(--acc);color:#fff;border:none;cursor:pointer;padding:13px 26px}
+.btn.submit:hover{background:var(--acc-deep)}
+.btn.submit:disabled{opacity:.6;cursor:default;transform:none;box-shadow:none}
+.formstatus{margin-top:16px;font-size:14px;font-weight:600;display:none;align-items:center;gap:9px}
+.formstatus.ok{color:#1a7a3c;display:flex}
+.formstatus.err{color:#b3261e;display:flex}
+.formstatus .ico{width:17px;height:17px;flex:0 0 auto}
+@media(max-width:640px){.helpcard .grid2{grid-template-columns:1fr}}
+
+
+/* footer */
+footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255,255,255,.35)}
+.foot{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start}
+.foot .col p{color:var(--mut2);font-size:13px;margin-top:10px;max-width:40ch}
+.foot .brand{font-size:15px}
+.foot .links{display:flex;gap:24px;color:var(--mut);font-size:13.5px;padding-top:8px}
+.foot .links a:hover{color:var(--ink)}
+.foot .end{
+  margin-top:34px;padding-top:22px;border-top:1px solid var(--line2);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  color:var(--mut2);font-size:12px;
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.6,.2,1),transform .8s cubic-bezier(.2,.6,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.hero .reveal{animation:rise .9s cubic-bezier(.2,.6,.2,1) both}
+.hero .d1{animation-delay:.05s}
+.hero .d2{animation-delay:.16s}
+.hero .d3{animation-delay:.3s}
+.hero .d4{animation-delay:.46s}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+@media(max-width:960px){
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){border-left:none}
+  .stat{padding:26px 18px;border-top:1px solid var(--line2)}
+  .stat:nth-child(1),.stat:nth-child(2){border-top:none}
+  .shots{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:720px){
+  .nav a:not(.pill){display:none}
+  .shots{grid-template-columns:repeat(2,1fr)}
+  .feats{grid-template-columns:1fr}
+  .conn3{grid-template-columns:1fr;gap:34px}
+  .conn3 .step::after{display:none}
+  .conn3 .step{padding:0}
+  .priv{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .float-card{display:none}
+  section{padding:60px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17.5v-11Z" fill="#e8a33d" opacity=".95"/><path d="M9.8 12.6l4.6-2.6v5.4l-4.6-2.8Z" fill="#0e131b"/></svg>
+      </span>
+      FolderVideoPlayer
+    </a>
+    <nav class="nav">
+      <a href="#features">Features</a>
+      <a href="#gallery">Screens</a>
+      <a href="#faq">FAQ</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#contact">Contact</a>
+      <a class="pill" href="https://apps.apple.com/app/id6808935262">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap inner">
+      <span class="eyebrow reveal d1"><span class="dot"></span>Now on the Apple&nbsp;TV App Store</span>
+      <h1 class="reveal d1">Your NAS library, on the <em>big&nbsp;screen.</em></h1>
+      <p class="lede reveal d2">FolderVideoPlayer is a fast, quiet SMB video player <b>for Apple&nbsp;TV</b>. Point it at the shared folders on your own network — your NAS, your Mac, your files — and the whole library opens up on your TV, with thumbnails that never slow down, no matter how big it gets.</p>
+      <div class="cta reveal d3">
+        <a class="btn primary" href="https://apps.apple.com/app/id6808935262">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>
+          View on the App Store
+        </a>
+        <a class="btn ghost" href="#gallery">See it on screen</a>
+      </div>
+      <div class="trust reveal d4">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg>For Apple TV</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No account needed</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No subscription</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No cloud, ever</span>
+      </div>
+
+      <div class="stage reveal d2">
+        <div class="glow"></div>
+        <div class="tvf">
+          <span class="tvsf" aria-hidden="true"></span>
+          <img class="tvshot" src="img/shot4.jpg" alt="FolderVideoPlayer library on an Apple TV — the full screen" width="480" height="270" loading="eager">
+          <div class="tvbar">
+            <span class="l"><i></i> <b>Media Share</b> · playing over SMB</span>
+            <span>Apple TV 4K · tvOS · local network only</span>
+          </div>
+        </div>
+        <div class="tvstand"></div>
+        <div class="tvshadow"></div>
+        <div class="float-card fc1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 8h20M9 5v14"/></svg>
+          <span>5,000+ files<small>thumbnails stay instant</small></span>
+        </div>
+        <div class="float-card fc2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+          <span>Resumes where you stopped<small>even after restart</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="wrap">
+      <div class="stat reveal"><div class="n">5,000<i>+</i></div><div class="l">videos in a library — browsing never slows, because every thumbnail is made once and kept</div></div>
+      <div class="stat reveal"><div class="n">100<i>%</i></div><div class="l">local network. Your videos never leave your home to reach your TV</div></div>
+      <div class="stat reveal"><div class="n">0</div><div class="l">accounts, analytics, ads or cloud servers — nothing to sign up for</div></div>
+      <div class="stat reveal"><div class="n">1<i>×</i></div><div class="l">payment, once, ever. No subscriptions, no recurring fees</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="kicker reveal">Made for the living room</div>
+      <h2 class="reveal">Everything a folder of videos <em>deserves</em> on a TV</h2>
+      <p class="sub reveal">No transcoding servers, no photo-library tax, no “supported cloud only”. Just your files, presented properly.</p>
+      <div class="feats">
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5v-11Z"/></svg></div>
+          <h3>Browse any SMB share</h3>
+          <p>Works with <b>Synology, QNAP, Windows, macOS, Linux</b> — anything that speaks SMB. Find your share by name over Bonjour or type its address. Folders, sort, tags, and all the deep paths you actually keep.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="m8 15.5 2.6-3 2.2 2.4 1.8-1.6L18 16.5"/></svg></div>
+          <h3>Smart thumbnail caching</h3>
+          <p>Every thumbnail is <b>generated once and never again</b> — even in libraries of 5,000+ videos browsing stays fast. Frames are kept on the TV and alongside your files on the share, so nothing is rebuilt for a second device either.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 4.5L12 21 3 7.5 6 3Z"/><path d="M3 7.5h18"/><path d="M9.5 7.5 12 21l2.5-13.5Z" opacity=".55"/></svg></div>
+          <h3>Tags that travel with you</h3>
+          <p>Tag your videos on the TV, see them on your <b>Mac, iPhone or a second Apple TV</b>. Tags live in a small folder on your own share — synced through your network, never through a server.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <h3>Picks up where you stopped</h3>
+          <p>Quit mid-episode, come back days later — it <b>offers to carry on</b> from the exact spot. Play order and preferences are remembered on the device, so the TV behaves like yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="gallery">
+    <div class="wrap">
+      <div class="kicker reveal">On screen</div>
+      <h2 class="reveal">Real screens, <em>full screen</em></h2>
+      <p class="sub reveal">Captured from FolderVideoPlayer running on an Apple TV 4K — this is what your living room sees.</p>
+      <div class="shots">
+        <div class="shot reveal"><img src="img/shot1.jpg" alt="FolderVideoPlayer on Apple TV — screen 1" width="480" height="270" loading="lazy"></div>
+        <div class="shot reveal"><img src="img/shot2.jpg" alt="FolderVideoPlayer on Apple TV — screen 2" width="480" height="270" loading="lazy"></div>
+        <div class="shot reveal"><img src="img/shot3.jpg" alt="FolderVideoPlayer on Apple TV — screen 3" width="480" height="270" loading="lazy"></div>
+        <div class="shot reveal"><img src="img/shot4.jpg" alt="FolderVideoPlayer on Apple TV — screen 4" width="480" height="270" loading="lazy"></div>
+        <div class="shot reveal"><img src="img/shot5.jpg" alt="FolderVideoPlayer on Apple TV — screen 5" width="480" height="270" loading="lazy"></div>
+        <div class="shot reveal"><img src="img/shot6.jpg" alt="FolderVideoPlayer on Apple TV — screen 6" width="480" height="270" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT CONNECTS -->
+  <section class="connect" id="connect">
+    <div class="wrap">
+      <div class="kicker reveal">One connection only</div>
+      <h2 class="reveal">Your TV meets your <em>files.</em> Nothing else.</h2>
+      <div class="conn3">
+        <div class="step reveal">
+          <span class="no">1</span>
+          <h3>Open the app on Apple TV</h3>
+          <p>No login, no sign-up, no account to create. Open it and the app looks for shares on your network.</p>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>0 accounts</span>
+        </div>
+        <div class="step reveal">
+          <span class="no">2</span>
+          <h3>Pick your SMB share</h3>
+          <p>Choose it from the list Bonjour discovers, or type the address. Credentials live only in the tvOS Keychain.</p>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="8" width="17" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>SMB + Keychain</span>
+        </div>
+        <div class="step reveal">
+          <span class="no">3</span>
+          <h3>Browse. Play. Enjoy.</h3>
+          <p>The whole library — folders, tags, thumbnails — streams straight from your share over your local network.</p>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5.5V11c0 5.2 3.4 9.4 8 11 4.6-1.6 8-5.8 8-11V5.5L12 2Z"/></svg>nothing leaves home</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section id="privacy">
+    <div class="wrap">
+      <div class="priv reveal">
+        <div class="shield">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5.5V11c0 5.2 3.4 9.4 8 11 4.6-1.6 8-5.8 8-11V5.5L12 2Z"/><path d="m8.7 11.8 2.3 2.3 4.3-4.6"/></svg>
+        </div>
+        <div>
+          <h3>Privacy by construction</h3>
+          <p>FolderVideoPlayer collects nothing — no analytics, no crash reporting, no advertising SDKs, no cloud of any kind. The only thing it talks to is the file share you point it at, on your own network.</p>
+        </div>
+        <a href="privacy.html">Read the privacy policy →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / HELP -->
+  <section id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="kicker reveal">Get help</div>
+      <h2 class="reveal">Something not right? <em>Tell us.</em></h2>
+      <p class="sub reveal">We reply by email, usually within a day or two. The more you tell us, the faster we can help.</p>
+      <div class="helpcard reveal">
+        <form id="helpForm" novalidate>
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="grid2">
+            <div class="field">
+              <label for="fName">Name <span>(optional)</span></label>
+              <input id="fName" name="name" type="text" placeholder="How should we address you?" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="fEmail">Email <span>*</span></label>
+              <input id="fEmail" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="fVer">App version <span>(optional)</span></label>
+              <input id="fVer" name="version" type="text" placeholder="e.g. 1.0.0 — found in Settings">
+            </div>
+            <div class="field">
+              <label for="fSrv">Share server <span>(optional)</span></label>
+              <input id="fSrv" name="server" type="text" placeholder="e.g. Synology DS920+ / Windows PC">
+            </div>
+          </div>
+          <div class="field">
+            <label for="fMsg">What happened? <span>*</span></label>
+            <textarea id="fMsg" name="message" required placeholder="Describe the problem — what you did, what you expected, and what you saw instead."></textarea>
+            <div class="note">No account needed. We only use your details to reply to you. This form is protected from spam.</div>
+          </div>
+          <div id="captchaWrap" class="field" style="display:none"></div>
+          <div class="formrow">
+            <button class="btn submit" type="submit" id="helpSubmit">Send message</button>
+            <span class="note">Or email us directly at <a href="mailto:richardtang@me.com" style="color:var(--acc);font-weight:600">richardtang@me.com</a></span>
+          </div>
+          <div class="formstatus" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="kicker reveal">Support</div>
+      <h2 class="reveal">Questions, <em>answered</em></h2>
+      <div class="faqs">
+        <details class="reveal" open>
+          <summary>What can FolderVideoPlayer play?</summary>
+          <div class="a">Anything your Apple TV can decode — MP4, MOV, MKV and more — from any SMB file share on your network. If the file plays in tvOS, it plays here.</div>
+        </details>
+        <details class="reveal">
+          <summary>Do I need an account, an internet connection or a NAS?</summary>
+          <div class="a">None of the three. There are <b>no accounts</b> and the app works <b>fully offline on your local network</b>. A NAS is the most common setup, but the share can live on a Mac, a Windows PC, a router with a USB drive — anything that serves SMB.</div>
+        </details>
+        <details class="reveal">
+          <summary>Will it slow down with a very large library?</summary>
+          <div class="a">No. Thumbnails are generated once and cached — on the TV and next to your files on the share — so browsing stays fast even in <b>libraries of 5,000+ videos</b>. A thumbnail that has been made is never made again.</div>
+        </details>
+        <details class="reveal">
+          <summary>Can I use the same tags on my Mac and my Apple TV?</summary>
+          <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and your Mac companion app can read and write them too.</div>
+        </details>
+        <details class="reveal">
+          <summary>Is there a subscription?</summary>
+          <div class="a">No. No subscription, no ads, no in-app purchases. Buy it once — it's yours.</div>
+        </details>
+        <details class="reveal">
+          <summary>Something isn't working. How do I reach you?</summary>
+          <div class="a">Use the <a href="#contact">help form</a> below, email <a href="mailto:richardtang@me.com">richardtang@me.com</a>, or open an issue on the <a href="https://github.com/tangrick/FolderVideoPlayerTV/issues" target="_blank" rel="noopener">GitHub repository</a>. Please include the app version and what your share server is, and I'll get back to you.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="brand" href="#top">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17.5v-11Z" fill="#e8a33d" opacity=".95"/><path d="M9.8 12.6l4.6-2.6v5.4l-4.6-2.8Z" fill="#0e131b"/></svg></span>
+          FolderVideoPlayer
+        </a>
+        <p>A small, private video player for Apple&nbsp;TV — built for people who keep their own files. Made in Singapore.</p>
+      </div>
+      <div class="links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/tangrick/FolderVideoPlayerTV" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="end">
+      <span>© 2026 Yew Huat Tang. All rights reserved.</span>
+      <span>FolderVideoPlayer · Apple TV · tvOS · SMB · Privacy first</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- help form ---------- */
+  // FREE Formspree key: create a form at formspree.io and paste its endpoint id here.
+  // Until then, submissions open a pre-filled email instead.
+  var FORMSPREE_ID = "";
+  // Optional: Cloudflare Turnstile site key (free — challenges.cloudflare.com). Leave "" to disable the widget;
+  // the honeypot and time-trap still protect the form.
+  var TURNSTILE_SITE_KEY = "";
+  var hf = document.getElementById('helpForm');
+  var tStart = Date.now();      // time-trap: humans take >4s to type a message
+  var hfCount = 0;              // session cap: max 5 sends per page load
+  var __tsToken = "";           // Turnstile verification token
+  if (hf) {
+    hf.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if (!hf.checkValidity()) { hf.reportValidity(); return; }
+      // -- spam gates: bots are dropped silently, real people never hit these --
+      var gotcha = hf.querySelector('input[name="_gotcha"]');
+      if (gotcha && gotcha.value.trim()) { console.warn('honeypot'); return; }
+      if (Date.now() - tStart < 4000) { console.warn('too fast'); return; }
+      var btn = document.getElementById('helpSubmit');
+      var st = document.getElementById('formStatus');
+      if (hfCount >= 5) {
+        st.className = 'formstatus err';
+        st.innerHTML = 'Too many messages from this browser — please email <a href="mailto:richardtang@me.com" style="color:var(--acc)">richardtang@me.com</a> instead.';
+        return;
+      }
+      var msgLen = document.getElementById('fMsg').value.trim().length;
+      if (msgLen < 10) {
+        st.className = 'formstatus err';
+        st.innerHTML = 'Please tell us a little more (at least 10 characters) so we can help.';
+        return;
+      }
+      if (TURNSTILE_SITE_KEY && !__tsToken) {
+        st.className = 'formstatus err';
+        st.innerHTML = 'Please complete the \u201cverify you are human\u201d check first.';
+        return;
+      }
+      hfCount++;
+      var ok  = '<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="m8.3 12.3 2.5 2.5 4.9-5"/></svg></span>';
+      var bad = '<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13M12 16.4v.1"/></svg></span>';
+      var data = {
+        name: document.getElementById('fName').value.trim(),
+        email: document.getElementById('fEmail').value.trim(),
+        version: document.getElementById('fVer').value.trim() || 'not stated',
+        server: document.getElementById('fSrv').value.trim() || 'not stated',
+        message: document.getElementById('fMsg').value.trim(),
+        _subject: 'FolderVideoPlayer support — ' + (document.getElementById('fName').value.trim() || 'customer'),
+        page: location.href,
+        'cf-turnstile-response': __tsToken
+      };
+      btn.disabled = true; btn.textContent = 'Sending…';
+      if (FORMSPREE_ID) {
+        fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        }).then(function(res){
+          if (res.ok) { st.className='formstatus ok'; st.innerHTML = ok + ' Sent! We’ll get back to you at ' + data.email + '.'; hf.reset(); }
+          else { st.className='formstatus err'; st.innerHTML = bad + ' Couldn’t send. Please try again or email richardtang@me.com.'; }
+        }).catch(function(){
+          st.className='formstatus err'; st.innerHTML = bad + ' Network error. Please email richardtang@me.com instead.';
+        }).finally(function(){ btn.disabled = false; btn.textContent = 'Send message'; });
+      } else {
+        var body = 'Name: ' + (data.name || '—') + '\nEmail: ' + data.email + '\nApp version: ' + data.version + '\nShare server: ' + data.server + '\n\n' + data.message;
+        var link = 'mailto:richardtang@me.com?subject=' + encodeURIComponent('FolderVideoPlayer support') + '&body=' + encodeURIComponent(body);
+        window.location.href = link;
+        st.className='formstatus ok';
+        st.innerHTML = ok + ' Your email app should open with the message ready — just press send.';
+      }
+    });
+  }
+
+  // load Cloudflare Turnstile only when a site key is configured
+  if (TURNSTILE_SITE_KEY) {
+    var ts = document.createElement('script');
+    ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    ts.async = true;
+    ts.onload = function(){
+      if (window.turnstile) {
+        var wrap = document.getElementById('captchaWrap');
+        if (wrap) {
+          wrap.style.display = 'block';
+          turnstile.render(wrap, { sitekey: TURNSTILE_SITE_KEY, callback: function(t){ __tsToken = t; } });
+        }
+      }
+    };
+    document.body.appendChild(ts);
+  }
+
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  document.querySelectorAll('.hero .reveal').forEach(function(el){ el.classList.add('in'); });
+  var ds = document.querySelectorAll('.faqs details');
+  ds.forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if(d.open){ ds.forEach(function(o){ if(o!==d) o.open=false; }); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
