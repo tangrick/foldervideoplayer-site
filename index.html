@@ -454,7 +454,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No cloud, ever</span>
       </div>
 
-      <div class="offer reveal d3">
+      <div class="offer reveal d3" id="offerBanner">
         <span class="tag">Launch offer</span>
         <span><b>Free</b> on the App Store — from now until <b>7&nbsp;Oct&nbsp;2026</b>.<span class="when">&nbsp;After that: <b>$1.99</b> once. No subscription, ever.</span></span>
       </div>
@@ -654,7 +654,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         </details>
         <details class="reveal">
           <summary>How much does it cost?</summary>
-          <div class="a">It's <b>free right now</b> — a launch offer that runs until <b>7 Oct 2026</b>. After that it's a one-time <b>$1.99</b>, no subscription, no ads, no in-app purchases. Buy it once — it's yours.</div>
+          <div class="a" id="faqCostAnswer">It's <b>free right now</b> — a launch offer that runs until <b>7 Oct 2026</b>. After that it's a one-time <b>$1.99</b>, no subscription, no ads, no in-app purchases. Buy it once — it's yours.</div>
         </details>
         <details class="reveal">
           <summary>Is there a subscription?</summary>
@@ -795,6 +795,24 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
       if(d.open){ ds.forEach(function(o){ if(o!==d) o.open=false; }); }
     });
   });
+
+  /* ---------- launch-offer auto-switch ----------
+     Free launch window ends 7 Oct 2026 (last free day); price becomes
+     $1.99 one-time on 8 Oct 2026 09:00 SGT (= 01:00 UTC, same moment the
+     App Store Connect price change is made). Before then: show the offer.
+     After: replace banner + FAQ answer with the regular price copy. */
+  var PAID_AT = Date.UTC(2026, 9, 8, 1, 0, 0); // 2026-10-08 01:00 UTC
+  if (Date.now() >= PAID_AT) {
+    var ob = document.getElementById('offerBanner');
+    if (ob) {
+      ob.innerHTML = '<span class="tag">Now on the App Store</span>' +
+        '<span><b>$1.99</b> once — no subscription, no ads, no in-app purchases. Buy it once, it\'s yours.</span>';
+    }
+    var fa = document.getElementById('faqCostAnswer');
+    if (fa) {
+      fa.innerHTML = 'A one-time <b>$1.99</b> — no subscription, no ads, no in-app purchases. Buy it once — it\'s yours.';
+    }
+  }
 })();
 </script>
 </body>
