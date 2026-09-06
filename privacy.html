@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — FolderVideoPlayer for Apple TV</title>
+<meta name="description" content="FolderVideoPlayer privacy policy: the app collects nothing, sends nothing, and has no servers of its own.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;
+  --ink:#24211b;
+  --mut:#6e675c;
+  --mut2:#8f887a;
+  --acc:#b45309;
+  --line:rgba(40,34,24,.11);
+  --line2:rgba(40,34,24,.07);
+  --font-d:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --font-s:"Instrument Serif",Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:
+    radial-gradient(70% 45% at 50% -5%,rgba(233,196,138,.2),transparent 65%),
+    linear-gradient(180deg,#faf8f3 0%,var(--bg) 45%,#f0ece2 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--font-d);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity:.02;
+}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 28px}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+.topbar{display:flex;align-items:center;gap:11px;padding:46px 0 10px;font-weight:700;color:var(--ink)}
+.topbar .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(145deg,#232c39,#0e131b);border:1px solid rgba(0,0,0,.25);display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 10px rgba(60,45,15,.16)}
+.topbar .mark svg{width:16px;height:16px}
+h1{font-size:clamp(30px,4.6vw,44px);font-weight:650;letter-spacing:-.02em;line-height:1.1;margin:34px 0 10px;color:var(--ink)}
+h1 em{font-family:var(--font-s);font-style:italic;color:var(--acc);font-weight:400}
+.meta{color:var(--mut2);font-size:13px;margin-bottom:44px;padding-bottom:26px;border-bottom:1px solid var(--line2);display:flex;gap:18px;flex-wrap:wrap}
+.meta a{color:var(--acc);font-weight:600}
+h2{font-size:19px;font-weight:650;margin:40px 0 12px;letter-spacing:-.01em;color:var(--ink)}
+h2::before{content:"";display:inline-block;width:18px;height:2px;background:var(--acc);vertical-align:middle;margin-right:10px;border-radius:2px}
+p{color:var(--mut);font-size:15.5px;margin-bottom:14px}
+p b{color:var(--ink);font-weight:600}
+ul{color:var(--mut);font-size:15.5px;margin:0 0 16px 6px;list-style:none}
+li{padding-left:20px;position:relative;margin-bottom:8px}
+li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.75}
+.foot{margin-top:56px;padding:26px 0 56px;border-top:1px solid var(--line2);color:var(--mut2);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.back{font-weight:700;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="topbar" href="index.html">
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17.5v-11Z" fill="#e8a33d" opacity=".95"/><path d="M9.8 12.6l4.6-2.6v5.4l-4.6-2.8Z" fill="#0e131b"/></svg></span>
+    FolderVideoPlayer
+  </a>
+
+  <h1>Privacy <em>policy</em></h1>
+  <div class="meta">
+    <span>Last updated: 5 September 2026</span>
+    <a href="index.html">← Back to the app page</a>
+  </div>
+
+  <h2>The short version</h2>
+  <p>FolderVideoPlayer <b>collects nothing, sends nothing, and has no servers of its own</b>. It talks to one thing: the file share on your own network that you point it at. Nothing you do in it reaches the developer or anybody else.</p>
+  <p>There are no accounts, no analytics, no crash reporting, no advertising, and no third-party services of any kind.</p>
+
+  <h2>What is stored on your Apple TV</h2>
+  <ul>
+    <li>The name you tag under, so your tags can be told apart from another person's on the same share.</li>
+    <li>An identifier for this Apple TV, generated on the device the first time it is needed. It is a random string — not a hardware serial or an advertising identifier — and it exists so that two devices writing tags to the same share do not overwrite each other's files.</li>
+    <li>Your playback preferences — the play order you last chose.</li>
+    <li>Where you stopped watching, so the app can offer to carry on: the folder and file you were playing and how far into it you were.</li>
+    <li>The connections you save, including the username and password for each share, kept in the <b>system Keychain</b> rather than in ordinary storage.</li>
+  </ul>
+  <p>All of this stays on the Apple TV. Removing the app removes it.</p>
+
+  <h2>What is written to your own share</h2>
+  <p>If you use tagging, the app writes to a folder named <b>.FolderVideoPlayer</b> on the share you connect to:</p>
+  <ul>
+    <li>Your tags, as a JSON file named after you and this device.</li>
+    <li>Poster frames it has generated for videos, so the same still does not have to be made again on another device.</li>
+  </ul>
+  <p>That share is yours. The app is a guest on it, and what it writes there is readable, movable and deletable by you like any other file. This is also how tags made on your Mac appear on your Apple TV and the other way round — through your own share, not through anything of the developer's.</p>
+
+  <h2>Network use</h2>
+  <p>The app makes exactly two kinds of network connection, both on your own local network:</p>
+  <ul>
+    <li><b>SMB</b> to the file share you have named, to list folders and read video.</li>
+    <li><b>Bonjour discovery</b> to find file shares on your local network, so you can pick one from a list instead of typing an address.</li>
+  </ul>
+  <p>It makes no other connections. It does not check for updates, does not phone home, and does not contact any analytics or advertising service. It has no ability to send your video, your tags, or your file names anywhere off your network — because there is nowhere for it to send them.</p>
+
+  <h2>Children</h2>
+  <p>The app collects no personal information from anyone, of any age.</p>
+
+  <h2>Third-party code</h2>
+  <p>Video shares are read using <a href="https://github.com/kishikawakatsumi/SMBClient" target="_blank" rel="noopener">SMBClient</a>, an open-source implementation of the SMB protocol under the MIT licence. It is a protocol library running on your device; it transmits nothing to its authors or to anyone else. Its licence is reproduced inside the app under Settings → Acknowledgements.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy ever changes, the new version replaces this page, with the date above updated.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy can be raised at <a href="mailto:richardtang@me.com">richardtang@me.com</a> or on the <a href="https://github.com/tangrick/FolderVideoPlayerTV/issues" target="_blank" rel="noopener">GitHub repository</a>.</p>
+
+  <div class="foot">
+    <span>© 2026 Yew Huat Tang. All rights reserved.</span>
+    <a class="back" href="index.html">← FolderVideoPlayer home</a>
+  </div>
+</div>
+</body>
+</html>
