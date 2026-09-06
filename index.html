@@ -108,6 +108,20 @@ h1 em{
 }
 .lede{color:var(--mut);font-size:clamp(16px,1.6vw,18.5px);max-width:58ch;margin:0 auto 32px}
 .lede b{color:var(--ink);font-weight:600}
+.offer{
+  display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin:26px auto 0;padding:13px 22px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(180,83,9,.12),rgba(233,196,138,.18));
+  border:1px solid var(--acc-line);box-shadow:var(--shadow);
+  font-size:15px;font-weight:600;color:var(--ink);
+}
+.offer .tag{
+  background:var(--acc);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;
+}
+.offer b{color:var(--acc-deep);font-weight:800}
+.offer .when{color:var(--mut);font-weight:600}
 .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 .btn{
   display:inline-flex;align-items:center;gap:9px;
@@ -440,6 +454,11 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No cloud, ever</span>
       </div>
 
+      <div class="offer reveal d3">
+        <span class="tag">Launch offer</span>
+        <span><b>Free</b> on the App Store — from now until <b>7&nbsp;Oct&nbsp;2026</b>.<span class="when">&nbsp;After that: <b>$1.99</b> once. No subscription, ever.</span></span>
+      </div>
+
       <div class="stage reveal d2">
         <div class="glow"></div>
         <div class="tvf">
@@ -632,6 +651,10 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <details class="reveal">
           <summary>Can I use the same tags on my Mac and my Apple TV?</summary>
           <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and your Mac companion app can read and write them too.</div>
+        </details>
+        <details class="reveal">
+          <summary>How much does it cost?</summary>
+          <div class="a">It's <b>free right now</b> — a launch offer that runs until <b>7 Oct 2026</b>. After that it's a one-time <b>$1.99</b>, no subscription, no ads, no in-app purchases. Buy it once — it's yours.</div>
         </details>
         <details class="reveal">
           <summary>Is there a subscription?</summary>
