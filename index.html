@@ -289,6 +289,40 @@ h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--ac
 }
 .conn3 .step .chip svg{width:11px;height:11px;color:var(--acc)}
 
+/* ---------- mac companion band ---------- */
+.mac{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:rgba(255,255,255,.32)}
+.maccard{
+  display:grid;grid-template-columns:1.5fr .8fr;margin-top:44px;
+  border:1px solid var(--line2);border-radius:22px;overflow:hidden;
+  background:var(--panel);box-shadow:0 2px 8px rgba(90,66,25,.05);
+}
+.mac .bens{padding:30px 34px;display:grid;align-content:center}
+.mac .ben{display:grid;grid-template-columns:auto 1fr;gap:15px;padding:15px 0;border-top:1px solid var(--line2)}
+.mac .ben:first-child{border-top:none;padding-top:2px}
+.mac .ben .mi{
+  width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+  display:grid;place-items:center;
+  background:var(--acc-soft);border:1px solid var(--acc-line);
+}
+.mac .ben .mi svg{width:17px;height:17px;color:var(--acc)}
+.mac .ben h3{font-size:15.5px;font-weight:650;letter-spacing:-.008em;margin-bottom:4px;color:var(--ink)}
+.mac .ben p{color:var(--mut);font-size:13.5px;line-height:1.6}
+.mac .ben p b{color:var(--ink)}
+.mac .dl{
+  background:linear-gradient(165deg,rgba(233,196,138,.2),rgba(255,255,255,0) 55%),#fff;
+  border-left:1px solid var(--line2);
+  padding:34px 32px;display:flex;flex-direction:column;justify-content:center;gap:15px;
+}
+.mac .dl .frag{
+  align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--acc-deep);background:var(--acc-soft);border:1px solid var(--acc-line);
+  padding:4px 10px;border-radius:999px;
+}
+.mac .dl h3{font-size:20px;font-weight:650;letter-spacing:-.014em;line-height:1.2;color:var(--ink)}
+.mac .dl .meta{color:var(--mut2);font-size:12.5px;line-height:1.55}
+.mac .dl .note{color:var(--mut2);font-size:12px;line-height:1.5}
+.mac .dl .btn{align-self:flex-start}
+
 /* privacy band */
 .priv{
   display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:26px;
@@ -402,6 +436,8 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   .conn3{grid-template-columns:1fr;gap:34px}
   .conn3 .step::after{display:none}
   .conn3 .step{padding:0}
+  .maccard{grid-template-columns:1fr}
+  .mac .dl{border-left:none;border-top:1px solid var(--line2)}
   .priv{grid-template-columns:1fr;text-align:center;justify-items:center}
   .float-card{display:none}
   section{padding:60px 0}
@@ -439,8 +475,8 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   <section class="hero">
     <div class="wrap inner">
       <span class="eyebrow reveal d1"><span class="dot"></span>Now on the Apple&nbsp;TV App Store</span>
-      <h1 class="reveal d1">Your NAS library, on the <em>big&nbsp;screen.</em></h1>
-      <p class="lede reveal d2">FolderVideoPlayer is a fast, quiet SMB video player <b>for Apple&nbsp;TV</b>. Point it at the shared folders on your own network — your NAS, your Mac, your files — and the whole library opens up on your TV, with thumbnails that never slow down, no matter how big it gets.</p>
+      <h1 class="reveal d1">Your video library, on the <em>big&nbsp;screen.</em></h1>
+      <p class="lede reveal d2">FolderVideoPlayer is for the library that <b>got too big to manage</b> — home movies, camera footage and downloads you've kept, scattered through folders on your own network. Point it at your NAS or your Mac and the whole collection opens on your TV, with thumbnails that never slow down and tags that find anything.</p>
       <div class="cta reveal d3">
         <a class="btn primary" href="https://apps.apple.com/app/id6808935262">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>
@@ -497,29 +533,84 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   <!-- FEATURES -->
   <section id="features">
     <div class="wrap">
-      <div class="kicker reveal">Made for the living room</div>
-      <h2 class="reveal">Everything a folder of videos <em>deserves</em> on a TV</h2>
-      <p class="sub reveal">No transcoding servers, no photo-library tax, no “supported cloud only”. Just your files, presented properly.</p>
+      <div class="kicker reveal">Made for big libraries</div>
+      <h2 class="reveal">Your own videos, <em>finally findable</em></h2>
+      <p class="sub reveal">No transcoding server, no photo-library tax, no “supported cloud only” — your files, presented properly no matter how deep the folders got.</p>
       <div class="feats">
         <div class="feat reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5v-11Z"/></svg></div>
           <h3>Browse any SMB share</h3>
-          <p>Works with <b>Synology, QNAP, Windows, macOS, Linux</b> — anything that speaks SMB. Find your share by name over Bonjour or type its address. Folders, sort, tags, and all the deep paths you actually keep.</p>
+          <p>Works with <b>Synology, QNAP, Windows, macOS, Linux</b> — anything that speaks SMB. Find your share by name over Bonjour or type its address. The folders you sorted years ago, and the ones you never got round to, both open as they are.</p>
         </div>
         <div class="feat reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="m8 15.5 2.6-3 2.2 2.4 1.8-1.6L18 16.5"/></svg></div>
-          <h3>Smart thumbnail caching</h3>
-          <p>Every thumbnail is <b>generated once and never again</b> — even in libraries of 5,000+ videos browsing stays fast. Frames are kept on the TV and alongside your files on the share, so nothing is rebuilt for a second device either.</p>
+          <h3>Thumbnails that never slow down</h3>
+          <p>Every thumbnail is <b>generated once and never again</b> — even at 5,000+ videos, browsing stays instant. Frames are kept on the TV and beside your files on the share, so a second device never rebuilds them.</p>
         </div>
         <div class="feat reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 4.5L12 21 3 7.5 6 3Z"/><path d="M3 7.5h18"/><path d="M9.5 7.5 12 21l2.5-13.5Z" opacity=".55"/></svg></div>
-          <h3>Tags that travel with you</h3>
-          <p>Tag your videos on the TV, see them on your <b>Mac, iPhone or a second Apple TV</b>. Tags live in a small folder on your own share — synced through your network, never through a server.</p>
+          <h3>Find it by what you remember</h3>
+          <p>Tag a video from the TV or the Mac — no save step — and find it again by the tag, not the file name you forgot. Tags live in a small folder on your own share, so the <b>Mac, the TV and every device</b> pointed at it see the same ones.</p>
         </div>
         <div class="feat reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
           <h3>Picks up where you stopped</h3>
-          <p>Quit mid-episode, come back days later — it <b>offers to carry on</b> from the exact spot. Play order and preferences are remembered on the device, so the TV behaves like yours.</p>
+          <p>Quit mid-video, come back days later — it <b>offers to carry on</b> from the exact spot. A 40-hour archive is watchable again when the TV remembers where you are in it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAC COMPANION -->
+  <section class="mac" id="mac">
+    <div class="wrap">
+      <div class="kicker reveal">Free · the management half</div>
+      <h2 class="reveal">Where a big library <em>gets managed</em></h2>
+      <p class="sub reveal">FolderVideoPlayer for macOS is free, and it reads the same shares your Apple&nbsp;TV does. Tag in bulk from a keyboard, clear out the duplicates eating your disk, and let it pre-build the thumbnails the TV shows — everything lands on the share, so both screens agree.</p>
+      <div class="maccard reveal">
+        <div class="bens">
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="17.5" r="2.2"/><path d="M6 15.3V5.5l11-2.2v10"/><circle cx="17" cy="13.5" r="2.2"/></svg></span>
+            <div>
+              <h3>Plays a whole folder — QuickTime won't even play two</h3>
+              <p><b>Open&nbsp;New… → pick a folder → it starts playing</b> — every video in it, in order, subfolders included, looping until you stop it. Apple's built-in player can't even queue two files in a row; here the folder <i>is</i> the queue — no playlist to build, nothing to drag.</p>
+            </div>
+          </div>
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="7" width="19" height="11" rx="2"/><path d="M6 10.5h.01M10 10.5h.01M14 10.5h.01M6 13.5h.01M10 13.5h.01M17.5 11h2M17.5 13.5h2M6.5 16h11"/></svg></span>
+            <div>
+              <h3>Tag from the Mac, see it on the TV</h3>
+              <p>Type a tag and it is applied — no save step. Tags publish into the <b>.FolderVideoPlayer</b> folder on your share, so the Apple&nbsp;TV, a second Mac or an iPhone pointed at the same share sees them too.</p>
+            </div>
+          </div>
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4.5 3 3 2.5-2.5 5 4.5"/></svg></span>
+            <div>
+              <h3>Thumbnails made once, for every screen</h3>
+              <p>The Mac writes the poster frames a library needs onto the share — and the Apple&nbsp;TV reads those same pictures instead of generating them over Wi-Fi. One library scanned on the Mac, instant browsing on the TV.</p>
+            </div>
+          </div>
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7.5" width="18" height="13" rx="2.5"/><path d="M8 7.5 9.5 5h5L16 7.5"/><circle cx="12" cy="14" r="3.4"/></svg></span>
+            <div>
+              <h3>Tags itself: date, camera, place, quality</h3>
+              <p>Point it at a folder and the tag suggestions come from what is already true — the folders you made, the date it was shot, which camera, <b>4K or 720p or Slow-mo</b>, and the place for clips that carry GPS. It shows you what it would add before you apply it, and everything is computed on your Mac.</p>
+            </div>
+          </div>
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 14.5 11 16l4-4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M5.6 18.4l2.2-2.2M16.2 7.8l2.2-2.2"/></svg></span>
+            <div>
+              <h3>Finds duplicates in a huge library</h3>
+              <p>Every video you play is fingerprinted as you watch — copies are then grouped with the keeper already chosen and the reason shown. Preview before you decide, tags from a discarded copy move to the one you keep, and nothing is ever deleted: duplicates go to the Trash, or to a folder you name on a share that has none.</p>
+            </div>
+          </div>
+        </div>
+        <div class="dl">
+          <span class="frag">Free · macOS 14+</span>
+          <h3>FolderVideoPlayer for Mac</h3>
+          <p class="meta">The management half of FolderVideoPlayer. Same shares, same tags, same thumbnails as the TV — download the .dmg and drag it to Applications.</p>
+          <a class="btn primary" href="FolderVideoPlayer-v1.0.0.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
+          <p class="note">Free — no account, no ads, nothing uploaded. This build is not yet signed with an Apple developer certificate, so on first launch macOS may warn it can't check the developer: <b>right-click the app → Open</b> to open it anyway.</p>
         </div>
       </div>
     </div>
@@ -557,7 +648,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <div class="step reveal">
           <span class="no">2</span>
           <h3>Pick your SMB share</h3>
-          <p>Choose it from the list Bonjour discovers, or type the address. Credentials live only in the tvOS Keychain.</p>
+          <p>Choose it from the list Bonjour discovers, or type the address. Credentials live only in the tvOS Keychain — and they need <b>read &amp; write</b> rights on the share for tags and thumbnails to be saved.</p>
           <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="8" width="17" height="12" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>SMB + Keychain</span>
         </div>
         <div class="step reveal">
@@ -650,8 +741,16 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
           <div class="a">No. Thumbnails are generated once and cached — on the TV and next to your files on the share — so browsing stays fast even in <b>libraries of 5,000+ videos</b>. A thumbnail that has been made is never made again.</div>
         </details>
         <details class="reveal">
+          <summary>Is this for my home videos and downloads — or for streaming?</summary>
+          <div class="a">Your own files: <b>home movies, camera footage, family archives and the downloads you've kept</b> — the personal library that outgrew folders. FolderVideoPlayer is not a streaming app and has nothing to do with any service; it only reads what you point it at on your own network, and nothing leaves home. If the library is big enough that <b>finding, sorting and duplicate copies</b> are the problem, that is exactly what the TV app and the free Mac companion are built to fix.</div>
+        </details>
+        <details class="reveal">
           <summary>Can I use the same tags on my Mac and my Apple TV?</summary>
-          <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and your Mac companion app can read and write them too.</div>
+          <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and the free <a href="FolderVideoPlayer-v1.0.0.dmg" rel="noopener">Mac companion app</a> can read and write them too.</div>
+        </details>
+        <details class="reveal">
+          <summary>Does my SMB account need read and write access?</summary>
+          <div class="a">Browsing and playback work with a read-only account. But to <b>save tags</b> and to <b>share thumbnails</b> between your devices, the app writes to a <b>.FolderVideoPlayer</b> folder on your share — so connect with an account that has <b>read &amp; write</b> rights on the share.</div>
         </details>
         <details class="reveal">
           <summary>How much does it cost?</summary>
@@ -663,7 +762,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         </details>
         <details class="reveal">
           <summary>Something isn't working. How do I reach you?</summary>
-          <div class="a">Use the <a href="#contact">help form</a> below, email <a href="mailto:richardtang@me.com">richardtang@me.com</a>, or open an issue on the <a href="https://github.com/tangrick/FolderVideoPlayerTV/issues" target="_blank" rel="noopener">GitHub repository</a>. Please include the app version and what your share server is, and I'll get back to you.</div>
+          <div class="a">Use the <a href="#contact">help form</a> below, or email <a href="mailto:richardtang@me.com">richardtang@me.com</a> — please include the app version and what your share server is, and I'll get back to you.</div>
         </details>
       </div>
     </div>
@@ -685,7 +784,6 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <a href="privacy.html">Privacy Policy</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
-        <a href="https://github.com/tangrick/FolderVideoPlayerTV" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
     <div class="end">
@@ -705,6 +803,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   var tStart = Date.now();      // time-trap: humans take >4s to type a message
   var hfCount = 0;              // session cap: max 5 sends per page load
   var __tsToken = "";           // Turnstile verification token
+  var __tsWidget = null;        // rendered Turnstile widget id (tokens are single-use → reset per attempt)
   if (hf) {
     hf.addEventListener('submit', function(ev){
       ev.preventDefault();
@@ -763,7 +862,12 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         var body = 'Name: ' + (data.name || '—') + '\nEmail: ' + data.email + '\nApp version: ' + data.version + '\nShare server: ' + data.server + '\n\n' + data.message;
         var link = 'mailto:richardtang@me.com?subject=' + encodeURIComponent('FolderVideoPlayer support') + '&body=' + encodeURIComponent(body);
         window.location.href = link;
-      }).finally(function(){ btn.disabled = false; btn.textContent = 'Send message'; });
+      }).finally(function(){
+        btn.disabled = false; btn.textContent = 'Send message';
+        // Turnstile tokens are single-use: clear and reset the widget for the next attempt
+        __tsToken = '';
+        if (__tsWidget != null && window.turnstile) { try { window.turnstile.reset(__tsWidget); } catch (e) {} }
+      });
     });
   }
 
@@ -777,7 +881,13 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         var wrap = document.getElementById('captchaWrap');
         if (wrap) {
           wrap.style.display = 'block';
-          turnstile.render(wrap, { sitekey: TURNSTILE_SITE_KEY, callback: function(t){ __tsToken = t; } });
+          __tsWidget = turnstile.render(wrap, {
+            sitekey: TURNSTILE_SITE_KEY,
+            action: 'contact',
+            callback: function(t){ __tsToken = t; },
+            'expired-callback': function(){ __tsToken = ''; },
+            'error-callback': function(){ __tsToken = ''; }
+          });
         }
       }
     };
