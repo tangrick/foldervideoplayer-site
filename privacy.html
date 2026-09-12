@@ -55,7 +55,11 @@ li{padding-left:20px;position:relative;margin-bottom:8px}
 li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.75}
 .foot{margin-top:56px;padding:26px 0 56px;border-top:1px solid var(--line2);color:var(--mut2);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .back{font-weight:700;font-size:13.5px}
+.site-note{background:rgba(180,83,9,.06);border:1px solid var(--acc-line);border-radius:12px;padding:12px 15px;font-size:13.5px;line-height:1.6}
+.site-note a{color:var(--acc);font-weight:600}
 </style>
+<!-- Cloudflare Web Analytics (cookieless, aggregate — see the disclosure below) -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4cf432e0536145aca0c6495345f89d56"}'></script>
 </head>
 <body>
 <div class="wrap">
@@ -66,13 +70,14 @@ li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;
 
   <h1>Privacy <em>policy</em></h1>
   <div class="meta">
-    <span>Last updated: 5 September 2026</span>
+    <span>Last updated: 9 September 2026</span>
     <a href="index.html">← Back to the app page</a>
   </div>
 
   <h2>The short version</h2>
   <p>FolderVideoPlayer <b>collects nothing, sends nothing, and has no servers of its own</b>. It talks to one thing: the file share on your own network that you point it at. Nothing you do in it reaches the developer or anybody else.</p>
-  <p>There are no accounts, no analytics, no crash reporting, no advertising, and no third-party services of any kind.</p>
+  <p>In the app there are no accounts, no analytics, no crash reporting, no advertising, and no third-party services of any kind.</p>
+  <p class="site-note">This policy is about the <b>app</b>. This website is separate: it uses <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener">Cloudflare Web Analytics</a>, a cookieless, privacy-respecting counter, to see which pages people visit — see <a href="#website">“About this website”</a> below. It does not track you across sites and stores no personal information.</p>
 
   <h2>What is stored on your Apple TV</h2>
   <ul>
@@ -106,11 +111,14 @@ li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;
   <h2>Third-party code</h2>
   <p>Video shares are read using <a href="https://github.com/kishikawakatsumi/SMBClient" target="_blank" rel="noopener">SMBClient</a>, an open-source implementation of the SMB protocol under the MIT licence. It is a protocol library running on your device; it transmits nothing to its authors or to anyone else. Its licence is reproduced inside the app under Settings → Acknowledgements.</p>
 
+  <h2 id="website">About this website</h2>
+  <p>This website (foldervideoplayer.tangrick.com) uses <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener">Cloudflare Web Analytics</a> to count page views — which pages are visited, roughly from where, and on what kind of device. Cloudflare Web Analytics is <b>cookieless</b>: it sets no cookies, uses no fingerprinting, and does not identify individual visitors or track them across sites. The counts are aggregate and are used only to understand what people find useful on the site. Nothing about your videos, your tags or your file names is involved — the app never talks to this website or to Cloudflare.</p>
+
   <h2>Changes</h2>
   <p>If this policy ever changes, the new version replaces this page, with the date above updated.</p>
 
   <h2>Contact</h2>
-  <p>Questions about this policy can be raised at <a href="mailto:richardtang@me.com">richardtang@me.com</a> or on the <a href="https://github.com/tangrick/FolderVideoPlayerTV/issues" target="_blank" rel="noopener">GitHub repository</a>.</p>
+  <p>Questions about this policy can be raised at <a href="mailto:richardtang@me.com">richardtang@me.com</a>.</p>
 
   <div class="foot">
     <span>© 2026 Yew Huat Tang. All rights reserved.</span>

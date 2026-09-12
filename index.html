@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FolderVideoPlayer for Apple TV — Your NAS library, on the big screen</title>
-<meta name="description" content="FolderVideoPlayer is a fast, private SMB video player for Apple TV. Browse your NAS folders, tags and thumbnails — all on your own network. No accounts, no cloud, no ads.">
+<title>FolderVideoPlayer — Open a folder. It plays. Your videos on Apple&nbsp;TV &amp; Mac</title>
+<meta name="description" content="Open a folder and it plays — no playlist to build. FolderVideoPlayer plays your own videos on Apple TV straight from your NAS, with a free Mac companion to tag and manage the same library. No accounts, no cloud, no subscription.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -75,6 +75,7 @@ img{display:block}
   padding:7px 15px;border-radius:999px;font-weight:700;font-size:13px;
   box-shadow:0 4px 14px rgba(180,83,9,.28);
   transition:transform .25s,box-shadow .25s,background .25s;
+  font-family:var(--font-d);
 }
 .nav .pill:hover{transform:translateY(-1px);background:var(--acc-deep);box-shadow:0 8px 22px rgba(180,83,9,.38);color:#fff}
 
@@ -134,6 +135,10 @@ h1 em{
 .btn.primary svg{width:16px;height:16px}
 .btn.ghost{border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.65)}
 .btn.ghost:hover{border-color:rgba(40,34,24,.3);transform:translateY(-2px)}
+.btn.ghost svg{width:16px;height:16px}
+.cta-note{margin-top:15px;font-size:12.5px;color:var(--mut2);font-weight:600;letter-spacing:.02em;text-align:center}
+.cta-note a{color:var(--acc);font-weight:700}
+.cta-note a:hover{text-decoration:underline}
 .trust{display:flex;gap:22px;margin-top:28px;justify-content:center;flex-wrap:wrap;color:var(--mut2);font-size:12.5px;font-weight:600;letter-spacing:.04em}
 .trust span{display:inline-flex;align-items:center;gap:7px}
 .trust svg{width:13px;height:13px;color:var(--acc)}
@@ -211,6 +216,31 @@ section[id],#helpForm{scroll-margin-top:70px}
 h2{font-size:clamp(27px,3.4vw,38px);font-weight:650;letter-spacing:-.018em;line-height:1.12;margin-bottom:14px;max-width:22ch;color:var(--ink)}
 h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--acc)}
 .sub{color:var(--mut);font-size:16px;max-width:56ch}
+
+/* four plain things strip */
+.four{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.four .card{
+  background:var(--panel);border:1px solid var(--line2);border-radius:18px;
+  padding:24px 26px 22px;box-shadow:0 2px 6px rgba(90,66,25,.05);
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.four .card:hover{transform:translateY(-4px);border-color:rgba(180,83,9,.28);box-shadow:var(--shadow)}
+.four .no{font-family:var(--font-s);font-style:italic;font-size:19px;color:var(--acc);display:block;margin-bottom:6px}
+.four h3{font-size:17.5px;font-weight:650;letter-spacing:-.01em;margin-bottom:7px;color:var(--ink)}
+.four p{color:var(--mut);font-size:14px;line-height:1.62}
+.four p b{color:var(--ink);font-weight:600}
+
+/* desktop showcase */
+.desktopcard{
+  margin:36px 0 0;background:var(--panel);border:1px solid var(--line2);
+  border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+}
+.desktopcard + .desktopcard{margin-top:16px}
+.desktopcard img{width:100%;height:auto}
+.desktopcard figcaption{
+  padding:13px 22px;font-size:12.5px;color:var(--mut2);font-weight:600;line-height:1.5;
+  border-top:1px solid var(--line2);background:rgba(255,255,255,.6);
+}
 
 /* stats */
 .stats{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:0;margin:6px 0 0;background:rgba(255,255,255,.4)}
@@ -321,6 +351,7 @@ h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--ac
 .mac .dl h3{font-size:20px;font-weight:650;letter-spacing:-.014em;line-height:1.2;color:var(--ink)}
 .mac .dl .meta{color:var(--mut2);font-size:12.5px;line-height:1.55}
 .mac .dl .note{color:var(--mut2);font-size:12px;line-height:1.5}
+.mac .dl .alt{color:var(--mut2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:-2px}
 .mac .dl .btn{align-self:flex-start}
 
 /* privacy band */
@@ -433,6 +464,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   .nav a:not(.pill){display:none}
   .shots{grid-template-columns:repeat(2,1fr)}
   .feats{grid-template-columns:1fr}
+  .four{grid-template-columns:1fr}
   .conn3{grid-template-columns:1fr;gap:34px}
   .conn3 .step::after{display:none}
   .conn3 .step{padding:0}
@@ -447,6 +479,8 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   .reveal{opacity:1;transform:none}
 }
 </style>
+<!-- Cloudflare Web Analytics (cookieless, aggregate — see privacy.html) -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4cf432e0536145aca0c6495345f89d56"}'></script>
 </head>
 <body>
 
@@ -464,7 +498,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
       <a href="#faq">FAQ</a>
       <a href="#privacy">Privacy</a>
       <a href="#contact">Contact</a>
-      <a class="pill" href="https://apps.apple.com/app/id6808935262">Get the app</a>
+      <a class="pill" href="download.html">Get the app</a>
     </nav>
   </div>
 </header>
@@ -475,17 +509,18 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
   <section class="hero">
     <div class="wrap inner">
       <span class="eyebrow reveal d1"><span class="dot"></span>Now on the Apple&nbsp;TV App Store</span>
-      <h1 class="reveal d1">Your video library, on the <em>big&nbsp;screen.</em></h1>
-      <p class="lede reveal d2">FolderVideoPlayer is for the library that <b>got too big to manage</b> — home movies, camera footage and downloads you've kept, scattered through folders on your own network. Point it at your NAS or your Mac and the whole collection opens on your TV, with thumbnails that never slow down and tags that find anything.</p>
+      <h1 class="reveal d1">Open a folder. It <em>plays.</em></h1>
+      <p class="lede reveal d2">No playlist to build — <b>the folder is the list</b>. Your Apple&nbsp;TV plays your own files straight from your NAS: <b>no media server, no account, no subscription</b>. All you need is a share — your NAS, or a folder your Mac already shares.</p>
       <div class="cta reveal d3">
         <a class="btn primary" href="https://apps.apple.com/app/id6808935262">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>
           View on the App Store
         </a>
-        <a class="btn ghost" href="#gallery">See it on screen</a>
+        <a class="btn ghost" href="FolderVideoPlayer-v1.0.0.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
       </div>
+      <div class="cta-note reveal d4">Two screens, one library — Apple&nbsp;TV &amp; Mac read the same shares, tags and thumbnails. <a href="#gallery">See it on screen →</a></div>
       <div class="trust reveal d4">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg>For Apple TV</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg>Apple&nbsp;TV &amp; Mac</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No account needed</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No subscription</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>No cloud, ever</span>
@@ -515,6 +550,36 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         <div class="float-card fc2">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
           <span>Resumes where you stopped<small>even after restart</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUR PLAIN THINGS -->
+  <section id="pillars">
+    <div class="wrap">
+      <div class="kicker reveal">Four plain things</div>
+      <h2 class="reveal">What it does, <em>in four lines</em></h2>
+      <div class="four">
+        <div class="card reveal">
+          <span class="no">1</span>
+          <h3>Open a folder. It plays.</h3>
+          <p>No playlist to build — <b>the folder is the list</b>. Drop a folder on the Mac app and the first video starts at once; it carries on by itself and remembers where you stopped.</p>
+        </div>
+        <div class="card reveal">
+          <span class="no">2</span>
+          <h3>Your Apple TV plays your own files, straight from your NAS.</h3>
+          <p><b>No media server, no account, no subscription.</b> The app talks to the share you point it at, over your local network only.</p>
+        </div>
+        <div class="card reveal">
+          <span class="no">3</span>
+          <h3>Tag it while you watch — the video waits for you.</h3>
+          <p>Press <b>⌘T</b> and the tag panel opens under the picture. Playback holds while you label — the video doesn't move on underneath you — and typing applies the tag instantly.</p>
+        </div>
+        <div class="card reveal">
+          <span class="no">4</span>
+          <h3>Tag it once on the Mac. It's already on the TV.</h3>
+          <p>Tags and posters are written into a <b>.FolderVideoPlayer</b> folder on your own share. The TV just reads them — no sync, no export, no account.</p>
         </div>
       </div>
     </div>
@@ -556,6 +621,44 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
           <h3>Picks up where you stopped</h3>
           <p>Quit mid-video, come back days later — it <b>offers to carry on</b> from the exact spot. A 40-hour archive is watchable again when the TV remembers where you are in it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESKTOP: pillars 1 + 3 -->
+  <section id="desktop">
+    <div class="wrap">
+      <div class="kicker reveal">On the desktop</div>
+      <h2 class="reveal">The whole folder plays. <em>Tag it while it runs.</em></h2>
+      <p class="sub reveal">The free Mac app is where the pair starts. Drop a folder on the window — or press <b>⌘O</b> — and the first video starts at once. No playlist to build, nothing to drag: the folder <i>is</i> the list, it carries on by itself, and every video keeps its own resume point.</p>
+      <figure class="desktopcard reveal">
+        <img src="img/mac-browse-960.jpg" alt="FolderVideoPlayer for Mac — a 129-video folder open in the three-pane window: sidebar, player and the folder's own list, filterable by tag" width="960" height="548" loading="lazy">
+        <figcaption>The workspace: sidebar, player, and the folder's own list — browse by tag, play from the list, it moves on by itself.</figcaption>
+      </figure>
+      <figure class="desktopcard reveal">
+        <img src="img/mac-tagging-960.jpg" alt="FolderVideoPlayer for Mac — the tag panel open under the picture, with the tags 2014, Iceland and Waterfall applied" width="960" height="550" loading="lazy">
+        <figcaption>Press ⌘T to tag what is playing: the panel opens under the picture and playback holds until you close it — the video doesn't move on underneath you. Typing applies instantly; no save step. Esc closes.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- APPLE TV: pillars 2 + 4 -->
+  <section id="tv">
+    <div class="wrap">
+      <div class="kicker reveal">On the Apple TV</div>
+      <h2 class="reveal">No media server. <em>Tag it once — it's already there.</em></h2>
+      <p class="sub reveal">The Apple TV app talks straight to the share you point it at — your files, over your own network, nothing in between. You need a share already: <b>your NAS, or a folder your Mac shares</b>. That's file sharing, not a media server.</p>
+      <div class="feats">
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg></div>
+          <h3>No media server</h3>
+          <p>Nothing to install on the NAS, no account anywhere, nothing exposed to the internet. The app speaks <b>SMB directly</b> — the same file sharing your Mac already does. Credentials stay in the tvOS Keychain, and the connection never leaves your local network.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 4.5L12 21 3 7.5 6 3Z"/><path d="M3 7.5h18"/><path d="M9.5 7.5 12 21l2.5-13.5Z" opacity=".55"/></svg></div>
+          <h3>Tag it once, on any screen</h3>
+          <p>Tags and posters are written into a <b>.FolderVideoPlayer</b> folder on your own share. The TV reads every tag file it finds there and merges them — each person's tags in their own file, so writers never overwrite each other. What you labelled on the Mac is on the TV when you sit down.</p>
         </div>
       </div>
     </div>
@@ -611,6 +714,8 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
           <p class="meta">The management half of FolderVideoPlayer. Same shares, same tags, same thumbnails as the TV — download the .dmg and drag it to Applications.</p>
           <a class="btn primary" href="FolderVideoPlayer-v1.0.0.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
           <p class="note">Free — no account, no ads, nothing uploaded. Signed and notarized by Apple, so macOS opens it without the "unidentified developer" warning.</p>
+          <span class="alt">Not on a Mac? The app you watch on is on the App Store.</span>
+          <a class="btn ghost" href="https://apps.apple.com/app/id6808935262"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>View on the App Store</a>
         </div>
       </div>
     </div>
@@ -730,7 +835,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
       <div class="faqs">
         <details class="reveal" open>
           <summary>What can FolderVideoPlayer play?</summary>
-          <div class="a">Anything your Apple TV can decode — MP4, MOV, MKV and more — from any SMB file share on your network. If the file plays in tvOS, it plays here.</div>
+          <div class="a">The video formats <b>Apple&nbsp;TV supports natively</b> — MP4, M4V and MOV — streamed straight from any SMB file share on your network. There is no transcoding and no bundled codecs: if tvOS itself can't decode the file, the app won't play it. Formats outside Apple's native support, such as MKV, WMV or DivX-encoded AVI, are not played.</div>
         </details>
         <details class="reveal">
           <summary>Do I need an account, an internet connection or a NAS?</summary>
@@ -893,6 +998,8 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
     };
     document.body.appendChild(ts);
   }
+
+  /* "Get the app" pill → download.html (plain link, no JS needed) */
 
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });

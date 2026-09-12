@@ -40,17 +40,37 @@ export async function onRequestPost(context) {
     }
 
     // -- server-side Turnstile verification (authoritative; never trust client) --
-    const tsForm = new FormData();
-    tsForm.append('secret', env.TURNSTILE_SECRET_KEY || '');
-    tsForm.append('response', token);
-    tsForm.append('remoteip', request.headers.get('CF-Connecting-IP') || '');
-    const tsResp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      body: tsForm,
-    });
-    const tsJson = await tsResp.json();
-    if (!tsJson.success) {
-      return json(cors, { ok: false, error: 'captcha-failed' }, 400);
+    const expectedAction = 'contact';
+    const expectedHostnames = new Set(
+      (env.TURNSTILE_HOSTNAMES || '').split(',').map((s) => s.trim()).filter(Boolean)
+    );
+    if (expectedHostnames.size === 0) {
+      return json(cors, { ok: false, error: 'captcha-failed' }, 403);
+    }
+    if (typeof token !== 'string' || token.length === 0 || token.length > 2048) {
+      return json(cors, { ok: false, error: 'captcha-failed' }, 403);
+    }
+    let tsJson;
+    try {
+      const tsForm = new FormData();
+      tsForm.append('secret', env.TURNSTILE_SECRET_KEY || '');
+      tsForm.append('response', token);
+      const clientIp = request.headers.get('CF-Connecting-IP');
+      if (clientIp) tsForm.append('remoteip', clientIp);
+      const tsResp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        body: tsForm,
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!tsResp.ok) throw new Error('siteverify ' + tsResp.status);
+      tsJson = await tsResp.json();
+    } catch (err) {
+      // Network error, non-2xx, or non-JSON body from siteverify. Fail closed.
+      console.error('siteverify error', err);
+      return json(cors, { ok: false, error: 'captcha-failed' }, 403);
+    }
+    if (!tsJson.success || tsJson.action !== expectedAction || !expectedHostnames.has(tsJson.hostname)) {
+      return json(cors, { ok: false, error: 'captcha-failed' }, 403);
     }
 
     // -- send via Brevo transactional email --
