@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download — FolderVideoPlayer for Apple TV &amp; Mac</title>
+<meta name="description" content="Download FolderVideoPlayer: the SMB video player app for Apple TV and the free Mac companion — same shares, same tags, same thumbnails. No accounts, no cloud.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;
+  --panel:#ffffff;
+  --ink:#24211b;
+  --mut:#6e675c;
+  --mut2:#8f887a;
+  --acc:#b45309;
+  --acc-ink:#ffffff;
+  --acc-deep:#96430a;
+  --acc-soft:rgba(180,83,9,.09);
+  --acc-line:rgba(180,83,9,.28);
+  --line:rgba(40,34,24,.11);
+  --line2:rgba(40,34,24,.07);
+  --shadow:0 18px 44px -20px rgba(110,80,30,.22);
+  --font-d:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --font-s:"Instrument Serif",Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(70% 45% at 50% -5%,rgba(233,196,138,.22),transparent 65%),
+    linear-gradient(180deg,#faf8f3 0%,var(--bg) 42%,#f1ede3 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--font-d);
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity:.022;
+}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 28px}
+a{color:inherit;text-decoration:none}
+img{display:block}
+
+/* ---------- topbar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(14px);
+  background:rgba(250,248,244,.82);
+  border-bottom:1px solid var(--line2);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:16px;letter-spacing:.01em;color:var(--ink)}
+.brand .mark{
+  width:30px;height:30px;border-radius:8px;flex:0 0 auto;
+  background:linear-gradient(145deg,#232c39,#0e131b);
+  border:1px solid rgba(0,0,0,.25);
+  display:grid;place-items:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 10px rgba(60,45,15,.18);
+}
+.brand .mark svg{width:16px;height:16px}
+.nav{display:flex;align-items:center;gap:26px;font-size:13.5px;color:var(--mut)}
+.nav a{transition:color .25s}
+.nav a:hover{color:var(--ink)}
+.nav .pill{
+  color:#fff;background:var(--acc);
+  padding:7px 15px;border-radius:999px;font-weight:700;font-size:13px;
+  box-shadow:0 4px 14px rgba(180,83,9,.28);
+  transition:transform .25s,box-shadow .25s,background .25s;
+  font-family:var(--font-d);
+}
+.nav .pill:hover{transform:translateY(-1px);background:var(--acc-deep);box-shadow:0 8px 22px rgba(180,83,9,.38);color:#fff}
+
+/* ---------- hero (centered, big TV below) ---------- */
+.hero{padding:88px 0 40px;text-align:center}
+.hero .inner{max-width:1000px;margin:0 auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acc);
+  border:1px solid var(--acc-line);
+  background:var(--acc-soft);
+  padding:8px 15px;border-radius:999px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px rgba(180,83,9,.55);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{
+  font-size:clamp(40px,6vw,68px);
+  line-height:1.02;
+  font-weight:650;
+  letter-spacing:-.024em;
+  margin:24px 0 20px;
+  color:var(--ink);
+}
+h1 em{
+  font-family:var(--font-s);
+  font-style:italic;
+  font-weight:400;
+  color:var(--acc);
+  padding-right:.06em;
+}
+.lede{color:var(--mut);font-size:clamp(16px,1.6vw,18.5px);max-width:58ch;margin:0 auto 32px}
+.lede b{color:var(--ink);font-weight:600}
+.offer{
+  display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin:26px auto 0;padding:13px 22px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(180,83,9,.12),rgba(233,196,138,.18));
+  border:1px solid var(--acc-line);box-shadow:var(--shadow);
+  font-size:15px;font-weight:600;color:var(--ink);
+}
+.offer .tag{
+  background:var(--acc);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;
+}
+.offer b{color:var(--acc-deep);font-weight:800}
+.offer .when{color:var(--mut);font-weight:600}
+.cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:15px 26px;border-radius:13px;
+  font-weight:700;font-size:15px;
+  transition:transform .25s,box-shadow .25s,background .25s;
+}
+.btn.primary{background:var(--acc);color:#fff;box-shadow:0 10px 30px rgba(180,83,9,.32)}
+.btn.primary:hover{transform:translateY(-2px);background:var(--acc-deep);box-shadow:0 16px 42px rgba(180,83,9,.42)}
+.btn.primary svg{width:16px;height:16px}
+.btn.ghost{border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.65)}
+.btn.ghost:hover{border-color:rgba(40,34,24,.3);transform:translateY(-2px)}
+.btn.ghost svg{width:16px;height:16px}
+
+/* ---------- the TV ---------- */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+/* ---------- sections ---------- */
+section{padding:80px 0}
+section[id],#helpForm{scroll-margin-top:70px}
+.kicker{
+  font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--acc);margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.kicker::before{content:"";width:26px;height:2px;border-radius:2px;background:var(--acc)}
+h2{font-size:clamp(27px,3.4vw,38px);font-weight:650;letter-spacing:-.018em;line-height:1.12;margin-bottom:14px;max-width:22ch;color:var(--ink)}
+h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--acc)}
+.sub{color:var(--mut);font-size:16px;max-width:56ch}
+
+/* stats */
+
+/* features */
+
+/* gallery — big TV screens, one per row */
+
+/* how it connects band */
+
+/* ---------- mac companion band ---------- */
+.mac{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:rgba(255,255,255,.32)}
+
+/* privacy band */
+
+/* FAQ */
+
+/* contact / help form */
+@media(max-width:640px){.helpcard .grid2{grid-template-columns:1fr}}
+
+
+/* footer */
+footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255,255,255,.35)}
+.foot{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start}
+.foot .col p{color:var(--mut);font-size:13px;margin-top:10px;max-width:40ch}
+.foot .brand{font-size:15px}
+.foot .links{display:flex;gap:24px;color:var(--mut);font-size:13.5px;padding-top:8px}
+.foot .links a:hover{color:var(--ink)}
+.foot .end{
+  margin-top:34px;padding-top:22px;border-top:1px solid var(--line2);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  color:var(--mut);font-size:12px;
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.6,.2,1),transform .8s cubic-bezier(.2,.6,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.hero .reveal{animation:rise .9s cubic-bezier(.2,.6,.2,1) both}
+.hero .d1{animation-delay:.05s}
+.hero .d2{animation-delay:.16s}
+.hero .d3{animation-delay:.3s}
+.hero .d4{animation-delay:.46s}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+@media(max-width:960px){
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){border-left:none}
+  .stat{padding:26px 18px;border-top:1px solid var(--line2)}
+  .stat:nth-child(1),.stat:nth-child(2){border-top:none}
+  .shots{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:720px){
+  .nav a:not(.pill){display:none}
+  .shots{grid-template-columns:repeat(2,1fr)}
+  .feats{grid-template-columns:1fr}
+  .conn3{grid-template-columns:1fr;gap:34px}
+  .conn3 .step::after{display:none}
+  .conn3 .step{padding:0}
+  .maccard{grid-template-columns:1fr}
+  .mac .dl{border-left:none;border-top:1px solid var(--line2)}
+  .priv{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .float-card{display:none}
+  section{padding:60px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* download page */
+.jumps{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.jump{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:11px 20px;border-radius:999px;
+  font-size:14px;font-weight:650;letter-spacing:-.005em;
+  color:var(--ink);background:rgba(255,255,255,.75);
+  border:1px solid var(--line);
+  box-shadow:0 2px 6px rgba(90,66,25,.05);
+  transition:transform .25s,border-color .25s,box-shadow .25s,background .25s,color .25s;
+}
+.jump svg{width:16px;height:16px;color:var(--acc);transition:color .25s}
+.jump:hover{
+  transform:translateY(-2px);
+  border-color:var(--acc-line);background:#fff;
+  box-shadow:0 10px 24px -10px rgba(180,83,9,.35);
+}
+.dlsec{background:rgba(255,255,255,.32);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.dlsec-alt{background:transparent;border:none}
+.plat{
+  background:var(--panel);border:1px solid var(--line2);border-radius:26px;
+  padding:40px 42px 44px;box-shadow:0 2px 10px rgba(90,66,25,.05);
+}
+#apple-tv .plat{border:1px solid var(--acc-line);box-shadow:var(--shadow)}
+.ph{display:flex;align-items:flex-start;gap:20px}
+.dlshot{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0d1117;
+  border:1px solid rgba(40,34,24,.18);box-shadow:0 14px 34px -16px rgba(90,62,18,.5);margin-bottom:22px}
+.dlshot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ptic{width:52px;height:52px;border-radius:15px;flex:0 0 auto;display:grid;place-items:center;
+  background:var(--acc-soft);border:1px solid var(--acc-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.ptic svg{width:24px;height:24px;color:var(--acc)}
+.ph h2{margin:6px 0 0;font-size:clamp(24px,3vw,32px)}
+.ph h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--acc)}
+.ph .frag{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acc-deep);background:var(--acc-soft);border:1px solid var(--acc-line);
+  padding:4px 11px;border-radius:999px;display:inline-block}
+.pl-sub{color:var(--mut);font-size:15.5px;max-width:64ch;margin:18px 0 26px;line-height:1.65}
+.pl-sub b{color:var(--ink)}
+.pl-pair{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:stretch}
+.pl-col{display:flex;flex-direction:column}
+.pl-col:last-child{justify-content:space-between;gap:16px}
+.pl-col{min-width:0}
+.plist{list-style:none;display:grid;gap:13px}
+.plist li{display:flex;gap:11px;align-items:flex-start;color:var(--mut);font-size:14.5px;line-height:1.55}
+.plist li svg{width:16px;height:16px;color:var(--acc);flex:0 0 auto;margin-top:4px}
+.pricecard{border:1px solid var(--line2);border-radius:18px;padding:20px 20px 18px;background:linear-gradient(160deg,rgba(233,196,138,.16),transparent 70%);margin-bottom:14px}
+.pricecard .req{color:var(--mut);font-size:12.5px;margin-top:15px;line-height:1.65;padding-top:14px;border-top:1px dashed var(--line)}
+.pricecard .offer{width:100%;box-shadow:none;padding:0;background:none;border:none;justify-content:flex-start;margin:0;text-align:left}
+.see-on-tv{display:inline-block;margin-top:14px;color:var(--acc);font-weight:650;font-size:13.5px}
+.see-on-tv:hover{text-decoration:underline}
+.same{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;
+  background:var(--panel);border:1px solid var(--acc-line);border-radius:20px;padding:28px 34px;margin-top:6px}
+.same .shield{width:50px;height:50px;border-radius:14px;flex:0 0 auto;display:grid;place-items:center;background:var(--acc-soft);border:1px solid var(--acc-line)}
+.same .shield svg{width:23px;height:23px;color:var(--acc)}
+.same h3{font-size:17px;font-weight:650;margin-bottom:4px}
+.same p{color:var(--mut);font-size:14px;max-width:64ch}
+.same p b{color:var(--ink)}
+.same a{color:var(--acc);font-weight:650;white-space:nowrap;font-size:14px}
+.same a:hover{text-decoration:underline}
+@media(max-width:960px){.pl-pair{grid-template-columns:1fr;gap:24px}.same{grid-template-columns:1fr;text-align:left;justify-items:start}.plat{padding:30px 24px 32px}}
+@media(max-width:720px){.ph{flex-wrap:wrap}.dlsec{padding:48px 0}
+  .nav{gap:16px;font-size:13px}
+  .nav a:not(.pill){display:inline}
+  .nav a[href='index.html#features'],.nav a[href='index.html#gallery'],.nav a[href='index.html#contact']{display:none}
+  .nav .pill{display:none}
+}
+
+</style>
+<!-- Cloudflare Web Analytics (cookieless, aggregate — see privacy.html) -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4cf432e0536145aca0c6495345f89d56"}'></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17.5v-11Z" fill="#e8a33d" opacity=".95"/><path d="M9.8 12.6l4.6-2.6v5.4l-4.6-2.8Z" fill="#0e131b"/></svg>
+      </span>
+      FolderVideoPlayer
+    </a>
+    <nav class="nav">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#gallery">Screens</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="index.html#contact">Contact</a>
+      <a class="pill" href="download.html" style="cursor:default">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- DL HERO -->
+  <section class="hero" style="padding-bottom:34px">
+    <div class="wrap inner">
+      <span class="eyebrow reveal d1"><span class="dot"></span>Download</span>
+      <h1 class="reveal d1">Get it on the screen <em>you own.</em></h1>
+      <p class="lede reveal d2">FolderVideoPlayer is two apps that share one library — the player that runs on your <b>Apple&nbsp;TV</b>, and the free <b>Mac</b> companion that manages it. Same shares, same tags, same thumbnails. Pick the one that fits how you watch.</p>
+      <div class="jumps reveal d3">
+        <a class="jump" href="#apple-tv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg>
+          Apple&nbsp;TV
+        </a>
+        <a class="jump" href="#desktop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><path d="M2 21h20"/></svg>
+          Desktop · Mac
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLE TV -->
+  <section class="dlsec" id="apple-tv">
+    <div class="wrap">
+      <div class="plat reveal">
+        <div class="ph">
+          <span class="ptic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M9.5 22h5M12 18v4"/></svg></span>
+          <div>
+            <span class="frag">For Apple&nbsp;TV · now on the App Store</span>
+            <h2>The player, on the <em>big screen</em></h2>
+          </div>
+        </div>
+        <p class="pl-sub">Your whole library on the TV — thumbnails that stay instant at 5,000+ videos, tags that find anything, and resumes where you stopped. No accounts, no cloud, nothing to sign up for.</p>
+        <div class="pl-pair">
+          <div class="pl-col">
+            <div class="dlshot"><img src="img/shot4.jpg" alt="FolderVideoPlayer running on an Apple TV — library view with thumbnails" width="480" height="270" loading="lazy"></div>
+            <ul class="plist">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Browse any SMB share — Synology, QNAP, Windows, macOS, Linux</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Find it by tag, not by the file name you forgot</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Thumbnails made once, kept — browsing never slows</li>
+            </ul>
+          </div>
+          <div class="pl-col">
+            <div class="pricecard">
+              <div class="offer" id="offerBanner" style="margin:0">
+                <span class="tag">Launch offer</span>
+                <span><b>Free</b> on the App Store — until <b>7&nbsp;Oct&nbsp;2026</b>.<span class="when">&nbsp;Then <b>$1.99</b> once.</span></span>
+              </div>
+              <div class="req">Apple&nbsp;TV 4K or HD running <b>tvOS&nbsp;18</b> or later · plays the formats Apple&nbsp;TV supports natively (MP4, M4V, MOV)</div>
+            </div>
+            <a class="btn primary" style="justify-content:center;margin-top:4px" href="https://apps.apple.com/app/id6808935262">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>
+              View on the App Store
+            </a>
+            <a class="see-on-tv" href="index.html#gallery">See it running on an Apple&nbsp;TV →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESKTOP / MAC -->
+  <section class="dlsec dlsec-alt" id="desktop">
+    <div class="wrap">
+      <div class="plat reveal">
+        <div class="ph">
+          <span class="ptic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg></span>
+          <div>
+            <span class="frag">Desktop · macOS 14+ · free</span>
+            <h2>The manager, on your <em>Mac</em></h2>
+          </div>
+        </div>
+        <p class="pl-sub">The free companion that keeps a huge library manageable from a keyboard — tag in bulk, clear the duplicates eating your disk, and pre-build the thumbnails your TV then shows instantly.</p>
+        <div class="pl-pair">
+          <div class="pl-col">
+            <ul class="plist">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Tag from the Mac — it appears on your Apple&nbsp;TV, no save step</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Plays a whole folder on loop — QuickTime won't even play two</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Finds duplicates, never deletes — keepers pre-chosen, reason shown</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Suggests tags from what's already true — date, camera, 4K or 720p, GPS place</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>Pre-builds the poster frames your Apple&nbsp;TV then loads instantly</li>
+            </ul>
+          </div>
+          <div class="pl-col">
+            <div class="pricecard">
+              <div class="offer" style="margin:0">
+                <span class="tag">Free</span>
+                <span>No account, no ads, nothing uploaded.<span class="when">&nbsp;Signed &amp; notarized by Apple.</span></span>
+              </div>
+              <div class="req">macOS 14+ · drag the .dmg into Applications to install</div>
+            </div>
+            <a class="btn primary" style="justify-content:center;margin-top:4px" href="FolderVideoPlayer-v1.0.0.dmg" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>
+              Download for Mac
+            </a>
+            <a class="see-on-tv" href="index.html#mac">Why the Mac and the TV belong together →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAME LIBRARY NOTE -->
+  <section class="dlsec" id="same-library" style="padding-top:0">
+    <div class="wrap">
+      <div class="same reveal">
+        <div class="shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5v-11Z"/></svg></div>
+        <div>
+          <h3>Both apps read the same library.</h3>
+          <p>Tags and poster frames live in a small <b>.FolderVideoPlayer</b> folder on your own share. Point both screens at the same share and whatever one of them tags, the other finds — no cloud, no syncing, nothing leaves home.</p>
+        </div>
+        <a href="index.html#features">See how it works →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="brand" href="index.html">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.2H19a1.5 1.5 0 0 1 1.5 1.5v8.8a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17.5v-11Z" fill="#e8a33d" opacity=".95"/><path d="M9.8 12.6l4.6-2.6v5.4l-4.6-2.8Z" fill="#0e131b"/></svg></span>
+          FolderVideoPlayer
+        </a>
+        <p>A small, private video player for Apple&nbsp;TV — built for people who keep their own files. Made in Singapore.</p>
+      </div>
+      <div class="links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+    <div class="end">
+      <span>© 2026 Yew Huat Tang. All rights reserved.</span>
+      <span>FolderVideoPlayer · Apple TV · tvOS · SMB · Privacy first</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* reveal-on-scroll */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  document.querySelectorAll('.hero .reveal').forEach(function(el){ el.classList.add('in'); });
+
+  /* launch-offer auto-switch — must fire at the SAME instant as the
+     App Store price change (8 Oct 2026 09:00 SGT = 01:00 UTC). */
+  var PAID_AT = Date.UTC(2026, 9, 8, 1, 0, 0);
+  if (Date.now() >= PAID_AT) {
+    var ob = document.getElementById('offerBanner');
+    if (ob) {
+      ob.innerHTML = '<span class="tag">On the App Store</span>' +
+        '<span><b>$1.99</b> once — no subscription, no ads, no in-app purchases.</span>';
+    }
+  }
+})();
+</script>
+</body>
+</html>
