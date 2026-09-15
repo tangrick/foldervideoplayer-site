@@ -252,6 +252,21 @@ h2 em{font-family:var(--font-s);font-style:italic;font-weight:400;color:var(--ac
 .stat .n i{font-family:var(--font-s);font-style:italic;color:var(--acc);font-size:.85em}
 .stat .l{color:var(--mut2);font-size:13px;margin-top:6px;max-width:24ch}
 
+/* AI section */
+.aisec{background:linear-gradient(180deg,rgba(255,252,246,.65),transparent)}
+.aigrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:38px}
+.bundles{margin-top:26px;background:var(--panel);border:1px solid var(--line2);border-radius:18px;padding:24px 26px;box-shadow:0 2px 6px rgba(90,66,25,.05)}
+.bundles h3{font-size:18px;letter-spacing:-.01em;margin:0 0 6px}
+.bundles p{color:var(--mut);font-size:15px;line-height:1.65;margin:0 0 16px}
+.btab{width:100%;border-collapse:collapse;font-size:14.5px}
+.btab th{text-align:left;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);font-weight:600;padding:0 10px 8px 0;border-bottom:1px solid var(--line2)}
+.btab td{padding:11px 10px 11px 0;border-bottom:1px solid var(--line2);color:var(--mut);vertical-align:top}
+.btab tr:last-child td{border-bottom:none}
+.btab td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+.btab td:last-child{text-align:right;white-space:nowrap;color:var(--ink);font-variant-numeric:tabular-nums}
+.bnote{margin-top:14px;font-size:13.5px;color:var(--mut);line-height:1.6}
+@media (max-width:760px){.aigrid{grid-template-columns:1fr}.btab td:last-child{text-align:left}}
+
 /* features */
 .feats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
 .feat{
@@ -495,6 +510,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
     </a>
     <nav class="nav">
       <a href="#features">Features</a>
+      <a href="#ai">AI</a>
       <a href="#gallery">Screens</a>
       <a href="#faq">FAQ</a>
       <a href="#privacy">Privacy</a>
@@ -517,7 +533,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>
           View on the App Store
         </a>
-        <a class="btn ghost" href="FolderVideoPlayer-v1.1.2.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
+        <a class="btn ghost" href="FolderVideoPlayer-v1.1.3.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
       </div>
       <div class="cta-note reveal d4">Two screens, one library — Apple&nbsp;TV &amp; Mac read the same shares, tags and thumbnails. <a href="#gallery">See it on screen →</a></div>
       <div class="trust reveal d4">
@@ -670,7 +686,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
     <div class="wrap">
       <div class="kicker reveal">Free · the management half</div>
       <h2 class="reveal">Where a big library <em>gets managed</em></h2>
-      <p class="sub reveal">FolderVideoPlayer for macOS is free, and it reads the same shares your Apple&nbsp;TV does. Tag in bulk from a keyboard, clear out the duplicates eating your disk, and let it pre-build the thumbnails the TV shows — everything lands on the share, so both screens agree.</p>
+      <p class="sub reveal">FolderVideoPlayer for macOS is free, and it reads the same shares your Apple&nbsp;TV does. Tag in bulk from a keyboard, clear out the duplicates eating your disk, let it <a href="#ai" style="color:var(--acc);font-weight:600">suggest tags and find people by face</a>, and pre-build the thumbnails the TV shows — everything lands on the share, so both screens agree.</p>
       <div class="maccard reveal">
         <div class="bens">
           <div class="ben">
@@ -708,16 +724,69 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
               <p>Every video you play is fingerprinted as you watch — copies are then grouped with the keeper already chosen and the reason shown. Preview before you decide, tags from a discarded copy move to the one you keep, and nothing is ever deleted: duplicates go to the Trash, or to a folder you name on a share that has none.</p>
             </div>
           </div>
+          <div class="ben">
+            <span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 13 2.2 2.2L12 10.5"/><path d="M15 5.5h4.5V10"/><path d="M19.5 5.5 13 12"/><path d="M4.5 19.5h15"/></svg></span>
+            <div>
+              <h3>Learns your tags, and finds people by face</h3>
+              <p>Optional add-ons you download from inside the app: it <b>suggests tags and learns from your yes and no</b>, finds more videos that look like a tag you already use, and puts a name to a face across the whole library. All of it runs <b>on your Mac</b> — nothing is uploaded. <a href="#ai" style="color:var(--acc);font-weight:600">How the AI works →</a></p>
+            </div>
+          </div>
         </div>
         <div class="dl">
           <span class="frag">Free · macOS 14+</span>
           <h3>FolderVideoPlayer for Mac</h3>
           <p class="meta">The management half of FolderVideoPlayer. Same shares, same tags, same thumbnails as the TV — download the .dmg and drag it to Applications.</p>
-          <a class="btn primary" href="FolderVideoPlayer-v1.1.2.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
+          <a class="btn primary" href="FolderVideoPlayer-v1.1.3.dmg" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></svg>Download for Mac</a>
           <p class="note">Free — no account, no ads, nothing uploaded. Signed and notarized by Apple, so macOS opens it without the "unidentified developer" warning.</p>
           <span class="alt">Not on a Mac? The app you watch on is on the App Store.</span>
           <a class="btn ghost" href="https://apps.apple.com/app/id6808935262"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-4.4 7.5A8.5 8.5 0 0 0 3.5 17v.5H4a8.5 8.5 0 0 0 16 0h.5V17a8.5 8.5 0 0 0-4.1-7.5A5 5 0 0 0 12 2Zm0 3a2 2 0 0 1 2 2h-4a2 2 0 0 1 2-2Z"/></svg>View on the App Store</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- AI ON THE MAC -->
+  <section class="aisec" id="ai">
+    <div class="wrap">
+      <div class="kicker reveal">On the Mac · runs on your machine</div>
+      <h2 class="reveal">It learns <em>your</em> library. <em>On your Mac.</em></h2>
+      <p class="sub reveal">The Mac app can watch your videos for you and suggest what to call them — and it learns from the tags <b>you</b> use, not from anybody else's. Everything is worked out on your own Mac with Apple's own Core ML: <b>no server, no account, no upload</b>, and no Python or extra tools to install.</p>
+      <div class="aigrid">
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 13 2.2 2.2L12 10.5"/><path d="M15 5.5h4.5V10"/><path d="M19.5 5.5 13 12"/><path d="M4.5 19.5h15"/></svg></div>
+          <h3>Suggests tags, then learns from your yes and no</h3>
+          <p>Open the tag panel while something plays and the app offers what it thinks fits. Click a suggestion to accept it, or its ✕ to say it isn't that. Once a tag has <b>four examples of what it is and four of what it isn't</b>, you can train it — from then on that tag is offered by a model fitted to <b>your</b> taste, not a generic guess. The ✕s matter: a tag with no rejections can't learn.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 4.5 4.5"/><path d="M8.5 10.5h4M10.5 8.5v4"/></svg></div>
+          <h3>“Find more like this” for any tag</h3>
+          <p>Pick a tag with a couple of videos in it and turn on <b>Look-alikes</b>. The app goes through the rest of the library, watches the ones it hasn't read yet, and brings back the videos that look like the ones you already tagged — each with its own frame, so you can see it before you accept it.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="3.4"/><path d="M5 20c.8-3.6 3.6-5.4 7-5.4s6.2 1.8 7 5.4"/></svg></div>
+          <h3>People, by face</h3>
+          <p>Name a face once and the app finds that person across the library — the <b>People</b> window shows how many videos and how many faces it has for each person, and lets you pick a better portrait for anyone. Face recognition is <b>off until you switch it on</b>, and the faces never leave the Mac.</p>
+        </div>
+        <div class="feat reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5.5V11c0 5.2 3.4 9.4 8 11 4.6-1.6 8-5.8 8-11V5.5L12 2Z"/><path d="m8.7 11.8 2.3 2.3 4.3-4.6"/></svg></div>
+          <h3>Safe / not-safe, quietly and privately</h3>
+          <p>A separate download marks what's adult and what isn't, and corrects itself from the marks you make — useful when a family archive and everything else share one drive. Like the rest of it, the verdict is worked out on this Mac and stays in <b>your</b> profile: nothing is reported anywhere, and nothing is uploaded.</p>
+        </div>
+      </div>
+
+      <div class="bundles reveal">
+        <h3>The AI is a download, not part of the app</h3>
+        <p>None of it ships inside the .dmg. Playing, tags, stars and the duplicate finder need no model at all, so the app works the moment you install it. Turn on what you want from <b>Settings → AI</b> and it fetches only that:</p>
+        <table class="btab">
+          <thead><tr><th>Add-on</th><th>What it gives you</th><th>Download</th></tr></thead>
+          <tbody>
+            <tr><td>Tag suggestions</td><td>Suggested tags, look-alikes and your own trained tags</td><td>≈67 MB</td></tr>
+            <tr><td>Safe / not-safe</td><td>The adult-content verdict, corrected by your own marks</td><td>≈159 MB</td></tr>
+            <tr><td>Face recognition</td><td>Finding faces, and the people you name</td><td>≈18 MB</td></tr>
+          </tbody>
+        </table>
+        <p class="bnote">Every download is checked against its published SHA-256 before any of it is installed — a half-installed model that claims to be ready is worse than none. Each tag profile keeps its own trained tags, its own accept/reject history, its own marks and its own named people, so two people sharing a Mac never train over each other. Videos you've hidden are left out of all of it.</p>
       </div>
     </div>
   </section>
@@ -776,7 +845,7 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         </div>
         <div>
           <h3>Privacy by construction</h3>
-          <p>FolderVideoPlayer collects nothing — no analytics, no crash reporting, no advertising SDKs, no cloud of any kind. The only thing it talks to is the file share you point it at, on your own network.</p>
+          <p>FolderVideoPlayer collects nothing — no analytics, no crash reporting, no advertising SDKs, no cloud of any kind. The only thing it talks to is the file share you point it at, on your own network. Even the Mac app's AI runs on your Mac: the one-off model download is the only thing it ever fetches, and nothing about your library goes with it.</p>
         </div>
         <a href="privacy.html">Read the privacy policy →</a>
       </div>
@@ -852,11 +921,15 @@ footer{border-top:1px solid var(--line2);padding:44px 0 60px;background:rgba(255
         </details>
         <details class="reveal">
           <summary>Can I use the same tags on my Mac and my Apple TV?</summary>
-          <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and the free <a href="FolderVideoPlayer-v1.1.2.dmg" rel="noopener">Mac companion app</a> can read and write them too.</div>
+          <div class="a">Yes. Tags and poster frames are stored in a <b>.FolderVideoPlayer</b> folder on your own share, so every device pointed at the same share sees the same tags — and the free <a href="FolderVideoPlayer-v1.1.3.dmg" rel="noopener">Mac companion app</a> can read and write them too.</div>
         </details>
         <details class="reveal">
           <summary>Does my SMB account need read and write access?</summary>
           <div class="a">Browsing and playback work with a read-only account. But to <b>save tags</b> and to <b>share thumbnails</b> between your devices, the app writes to a <b>.FolderVideoPlayer</b> folder on your share — so connect with an account that has <b>read &amp; write</b> rights on the share.</div>
+        </details>
+        <details class="reveal">
+          <summary>The Mac app has AI features — do my videos get uploaded?</summary>
+          <div class="a">No. Everything the AI works out — suggested tags, look-alikes, faces, the safe/not-safe verdict — is computed <b>on your own Mac</b> using Apple's Core ML. There is <b>no server, no account and no upload</b>, and no model ever leaves the computer it was downloaded to. The only thing that travels is the one-off model download itself, and none of it ships in the app: you choose what to fetch in <b>Settings → AI</b>. See <a href="#ai">how the AI works</a>.</div>
         </details>
         <details class="reveal">
           <summary>How much does it cost?</summary>
