@@ -70,13 +70,13 @@ li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;
 
   <h1>Privacy <em>policy</em></h1>
   <div class="meta">
-    <span>Last updated: 9 September 2026</span>
+    <span>Last updated: 15 September 2026</span>
     <a href="index.html">← Back to the app page</a>
   </div>
 
   <h2>The short version</h2>
   <p>FolderVideoPlayer <b>collects nothing, sends nothing, and has no servers of its own</b>. It talks to one thing: the file share on your own network that you point it at. Nothing you do in it reaches the developer or anybody else.</p>
-  <p>In the app there are no accounts, no analytics, no crash reporting, no advertising, and no third-party services of any kind.</p>
+  <p>In the app there are no accounts, no analytics, no crash reporting, no advertising, and no third-party services of any kind. The Mac app's optional AI features run on your own Mac — see <a href="#ai-privacy">The AI features</a>.</p>
   <p class="site-note">This policy is about the <b>app</b>. This website is separate: it uses <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener">Cloudflare Web Analytics</a>, a cookieless, privacy-respecting counter, to see which pages people visit — see <a href="#website">“About this website”</a> below. It does not track you across sites and stores no personal information.</p>
 
   <h2>What is stored on your Apple TV</h2>
@@ -98,12 +98,16 @@ li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;
   <p>That share is yours. The app is a guest on it, and what it writes there is readable, movable and deletable by you like any other file. This is also how tags made on your Mac appear on your Apple TV and the other way round — through your own share, not through anything of the developer's.</p>
 
   <h2>Network use</h2>
-  <p>The app makes exactly two kinds of network connection, both on your own local network:</p>
+  <p>In normal use the app makes only these two kinds of network connection, both on your own local network:</p>
   <ul>
     <li><b>SMB</b> to the file share you have named, to list folders and read video.</li>
     <li><b>Bonjour discovery</b> to find file shares on your local network, so you can pick one from a list instead of typing an address.</li>
   </ul>
+  <p>The Mac app makes <b>one</b> further connection, and only when you ask for it: if you turn on an AI feature in Settings → AI, it downloads that feature's model files from a public GitHub address. That is a plain file download — no account, no identifier, nothing about your library is sent with it, and once the files are on your Mac the feature never connects again.</p>
   <p>It makes no other connections. It does not check for updates, does not phone home, and does not contact any analytics or advertising service. It has no ability to send your video, your tags, or your file names anywhere off your network — because there is nowhere for it to send them.</p>
+
+  <h2 id="ai-privacy">The AI features</h2>
+  <p>The Mac app's optional AI — suggested tags, look-alikes, face recognition, and the safe/not-safe verdict — runs <b>entirely on your Mac</b>, through Apple's Core ML. Your videos, the frames it reads from them, the tags you accept or reject, the marks you make and the people you name are all worked out and stored locally, under the app's own folder. None of it is uploaded, none of it is shared with the developer or anyone else, and no model leaves the computer it was downloaded to. Face recognition is off until you switch it on, and videos you have hidden are excluded from everything the AI does.</p>
 
   <h2>Children</h2>
   <p>The app collects no personal information from anyone, of any age.</p>
