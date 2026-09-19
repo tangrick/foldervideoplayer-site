@@ -1,2 +1,5 @@
 *.dmg
 .DS_Store
+.wrangler/state/
+.wrangler/tmp/
+.wrangler/cache/cf.json
