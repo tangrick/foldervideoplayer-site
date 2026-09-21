@@ -191,6 +191,16 @@ figure figcaption{margin-top:14px;font-size:14.5px;color:var(--mut);max-width:60
 .field textarea{resize:vertical;min-height:150px}
 .field input::placeholder,.field textarea::placeholder{color:#958d80}
 .field input:focus,.field textarea:focus{outline:none;background:var(--surface);border-color:var(--acc);box-shadow:0 0 0 3px rgba(180,83,9,.15)}
+.field input[type="file"]{padding:10px 12px;cursor:pointer}
+.field input[type="file"]::file-selector-button{font:inherit;font-size:14.5px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 13px;margin-right:12px;cursor:pointer;transition:border-color .2s}
+.field input[type="file"]::file-selector-button:hover{border-color:var(--acc);color:var(--acc-deep)}
+.picnote{margin-top:8px}
+.pics{list-style:none;display:grid;gap:8px;margin-top:14px}
+.pics li{display:flex;align-items:center;gap:12px;padding:8px;border:1px solid var(--line2);border-radius:10px;background:var(--surface);font-size:14.5px}
+.pics img{width:60px;height:40px;object-fit:cover;border-radius:6px;background:var(--sunk);flex:0 0 auto}
+.pics span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mut)}
+.pics .rm{font:inherit;font-size:14px;font-weight:600;color:var(--acc-deep);background:none;border:0;padding:6px 8px;border-radius:8px;cursor:pointer}
+.pics .rm:hover{background:var(--acc-soft)}
 .formrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .formstatus{margin-top:18px;font-size:15px;font-weight:600;display:none;align-items:center;gap:9px}
 .formstatus.ok{color:#17693a;display:flex}
