@@ -73,6 +73,8 @@ export async function onRequestPost(context) {
       return json(cors, { ok: false, error: 'captcha-failed' }, 403);
     }
 
+    const attachment = sanitizeAttachments(body.attachments);
+
     // -- send via Brevo transactional email --
     const subject = 'FolderVideoPlayer support — ' + (name || 'customer');
     const text =
@@ -80,7 +82,8 @@ export async function onRequestPost(context) {
       'Email: ' + email + '\n' +
       'App version: ' + version + '\n' +
       'Share server: ' + server + '\n' +
-      'Page: ' + String(body.page || '') + '\n\n' +
+      'Page: ' + String(body.page || '') + '\n' +
+      'Screenshots: ' + (attachment.length ? attachment.map((a) => a.name).join(', ') : 'none') + '\n\n' +
       message;
 
     const brevoResp = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -96,6 +99,7 @@ export async function onRequestPost(context) {
         replyTo: { email, name: name || 'Customer' },
         subject,
         textContent: text,
+        ...(attachment.length ? { attachment } : {}),
       }),
     });
 
@@ -115,6 +119,39 @@ export async function onRequestPost(context) {
 // OPTIONS handled above; GET just tells callers the endpoint exists
 export async function onRequestGet() {
   return new Response('contact endpoint', { status: 200 });
+}
+
+// Screenshots are re-checked here, never trusting what the browser sent: the
+// client downscales to JPEG, so anything that is not a small, real image is
+// dropped rather than mailed on. Brevo's own attachment ceiling is 10 MB per
+// message; 6 MB of decoded image leaves room for the rest.
+export function sanitizeAttachments(list) {
+  const MAX_ATTACHMENTS = 3;
+  const MAX_ATTACHMENT_BYTES = 6 * 1024 * 1024;
+  const MAGIC = [
+    { prefix: '/9j/', ext: 'jpg' },          // JPEG
+    { prefix: 'iVBORw0KGgo', ext: 'png' },   // PNG
+    { prefix: 'UklGR', ext: 'webp' },        // WebP (RIFF)
+  ];
+  const out = [];
+  let bytes = 0;
+  const sent = Array.isArray(list) ? list.slice(0, MAX_ATTACHMENTS) : [];
+  for (const item of sent) {
+    const content = String((item && item.content) || '');
+    if (!content || !/^[A-Za-z0-9+/]+={0,2}$/.test(content)) continue;
+    const kind = MAGIC.find((m) => content.startsWith(m.prefix));
+    if (!kind) continue;
+    const size = Math.floor(content.length * 0.75);
+    if (bytes + size > MAX_ATTACHMENT_BYTES) break;
+    bytes += size;
+    const base = String((item && item.name) || 'screenshot')
+      .replace(/\.[^.]+$/, '')
+      .replace(/[^A-Za-z0-9 _-]/g, '')
+      .trim()
+      .slice(0, 40) || 'screenshot';
+    out.push({ name: base + '.' + kind.ext, content });
+  }
+  return out;
 }
 
 function json(cors, obj, status) {

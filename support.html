@@ -118,6 +118,12 @@
             <label for="fMsg">What happened?</label>
             <textarea id="fMsg" name="message" required placeholder="What you did, what you expected, and what you saw instead."></textarea>
           </div>
+          <div class="field">
+            <label for="fShots">Screenshots <span>(optional, up to 3)</span></label>
+            <input id="fShots" name="shots" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+            <div class="picnote small">A photo of the TV screen works too. Images are shrunk in your browser before sending, which also removes any location data.</div>
+            <ul class="pics" id="picList"></ul>
+          </div>
           <div id="captchaWrap" class="field" style="display:none"></div>
           <div class="formrow">
             <button class="btn btn-primary" type="submit" id="helpSubmit">Send message</button>
@@ -172,6 +178,86 @@
   var hfCount = 0;              // session cap: max 5 sends per page load
   var __tsToken = "";           // Turnstile verification token
   var __tsWidget = null;        // rendered Turnstile widget id (tokens are single-use → reset per attempt)
+
+  /* ---------- screenshots ----------
+     Images are downscaled in the browser: a 4K screenshot or phone photo lands
+     well under 1 MB, Brevo stays inside its attachment limit, and redrawing
+     through a canvas drops EXIF (including GPS) before anything is sent. */
+  var MAX_PICS = 3, MAX_EDGE = 1600, MAX_TOTAL = 6 * 1024 * 1024;
+  var pics = [];                // [{name, content(base64), url}]
+  var picInput = document.getElementById('fShots');
+  var picList = document.getElementById('picList');
+
+  function totalBytes(){ return pics.reduce(function(n,p){ return n + p.content.length * 0.75; }, 0); }
+
+  function drawPics(){
+    if (!picList) return;
+    picList.innerHTML = '';
+    pics.forEach(function(p, i){
+      var li = document.createElement('li');
+      var img = document.createElement('img');
+      img.src = p.url; img.alt = '';
+      var span = document.createElement('span');
+      span.textContent = p.name;
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'rm'; rm.textContent = 'Remove';
+      rm.setAttribute('aria-label', 'Remove ' + p.name);
+      rm.addEventListener('click', function(){ URL.revokeObjectURL(p.url); pics.splice(i,1); drawPics(); });
+      li.appendChild(img); li.appendChild(span); li.appendChild(rm);
+      picList.appendChild(li);
+    });
+  }
+
+  function shrink(file){
+    return new Promise(function(resolve, reject){
+      var url = URL.createObjectURL(file);
+      var im = new Image();
+      im.onload = function(){
+        var s = Math.min(1, MAX_EDGE / Math.max(im.width, im.height));
+        var c = document.createElement('canvas');
+        c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        var data = c.toDataURL('image/jpeg', 0.82);
+        resolve({
+          name: (file.name || 'screenshot').replace(/\.[^.]+$/, '').slice(0, 40) + '.jpg',
+          content: data.slice(data.indexOf(',') + 1),
+          url: data
+        });
+      };
+      im.onerror = function(){ URL.revokeObjectURL(url); reject(new Error('not-an-image')); };
+      im.src = url;
+    });
+  }
+
+  if (picInput) {
+    picInput.addEventListener('change', function(){
+      var st = document.getElementById('formStatus');
+      var files = Array.prototype.slice.call(picInput.files || []);
+      picInput.value = '';
+      files.reduce(function(chain, f){
+        return chain.then(function(){
+          if (pics.length >= MAX_PICS) {
+            st.className = 'formstatus err';
+            st.textContent = 'Up to ' + MAX_PICS + ' images, please.';
+            return;
+          }
+          return shrink(f).then(function(p){
+            if (totalBytes() + p.content.length * 0.75 > MAX_TOTAL) {
+              st.className = 'formstatus err';
+              st.textContent = 'Those images are too large to email. Please send fewer, or smaller ones.';
+              return;
+            }
+            pics.push(p); drawPics();
+          }).catch(function(){
+            st.className = 'formstatus err';
+            st.textContent = '“' + (f.name || 'That file') + '” isn’t an image we can read.';
+          });
+        });
+      }, Promise.resolve());
+    });
+  }
+
   if (hf) {
     hf.addEventListener('submit', function(ev){
       ev.preventDefault();
@@ -209,7 +295,8 @@
         message: document.getElementById('fMsg').value.trim(),
         _subject: 'FolderVideoPlayer support — ' + (document.getElementById('fName').value.trim() || 'customer'),
         page: location.href,
-        'cf-turnstile-response': __tsToken
+        'cf-turnstile-response': __tsToken,
+        attachments: pics.map(function(p){ return { name: p.name, content: p.content }; })
       };
       btn.disabled = true; btn.textContent = 'Sending…';
       fetch('/api/contact', {
@@ -219,14 +306,14 @@
         return res.json().then(function(j){ return { res: res, j: j }; });
       }).then(function(r){
         if (r.res.ok && r.j.ok) {
-          st.className='formstatus ok'; st.innerHTML = ok + ' Sent! We’ll get back to you at ' + data.email + '.'; hf.reset();
+          st.className='formstatus ok'; st.innerHTML = ok + ' Sent! We’ll get back to you at ' + data.email + '.'; hf.reset(); pics = []; drawPics();
         } else {
           st.className='formstatus err'; st.innerHTML = bad + ' Couldn’t send (error ' + (r.j && r.j.error ? r.j.error : r.res.status) + '). Please email richardtang@me.com instead.';
         }
       }).catch(function(){
         // network failure — fall back to mailto compose so the message is never lost
         st.className='formstatus ok';
-        st.innerHTML = ok + ' Offline — opening your email app with the message ready, just press send.';
+        st.innerHTML = ok + ' Offline — opening your email app with the message ready, just press send.' + (pics.length ? ' Please attach your images there.' : '');
         var body = 'Name: ' + (data.name || '—') + '\nEmail: ' + data.email + '\nApp version: ' + data.version + '\nShare server: ' + data.server + '\n\n' + data.message;
         var link = 'mailto:richardtang@me.com?subject=' + encodeURIComponent('FolderVideoPlayer support') + '&body=' + encodeURIComponent(body);
         window.location.href = link;
